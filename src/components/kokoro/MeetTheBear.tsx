@@ -13,12 +13,12 @@ export function MeetTheBear() {
         ref={ref}
         className="reveal mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_1.1fr]"
       >
-        <div className="relative">
+        <div className="relative mx-auto w-full max-w-[420px]">
           <div
-            className="absolute -inset-6 -z-10 rounded-[2rem]"
+            className="pointer-events-none absolute inset-0 -z-10 rounded-full"
             style={{
               background:
-                "radial-gradient(80% 80% at 50% 50%, color-mix(in oklab, var(--coral) 65%, transparent) 0%, transparent 70%)",
+                "radial-gradient(60% 60% at 50% 55%, color-mix(in oklab, var(--coral) 70%, transparent) 0%, transparent 70%)",
             }}
           />
           <BearSlot variant="peek" aspect="1 / 1" />
