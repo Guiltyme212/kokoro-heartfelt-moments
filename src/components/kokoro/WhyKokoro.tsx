@@ -12,13 +12,22 @@ export function WhyKokoro() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section className="px-5 py-20 sm:py-28">
+    <section className="px-5 py-16 sm:py-20">
       <div ref={ref} className="reveal mx-auto max-w-5xl">
-        <h2 className="mx-auto max-w-3xl text-balance text-center text-3xl font-extrabold sm:text-4xl md:text-5xl">
-          meditation apps give you a library. kokoro makes you a moment.
-        </h2>
+        <div className="mx-auto max-w-3xl text-center">
+          <p
+            className="text-xs tracking-[0.22em] uppercase"
+            style={{ color: "var(--sunset)" }}
+          >
+            not a library — a companion
+          </p>
+          <h2 className="mt-3 text-balance text-3xl font-extrabold sm:text-4xl md:text-5xl">
+            most apps give you a list.{" "}
+            <span style={{ color: "var(--moss-deep)" }}>kokoro makes you a moment.</span>
+          </h2>
+        </div>
 
-        <div className="mt-14">
+        <div className="mt-10">
           {/* column headers */}
           <div className="grid grid-cols-2 gap-4 px-5 pb-3 text-xs uppercase tracking-widest sm:gap-10 sm:px-7 sm:text-sm">
             <span style={{ color: "color-mix(in oklab, var(--ink) 55%, transparent)" }}>

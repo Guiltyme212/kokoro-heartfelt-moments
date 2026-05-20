@@ -19,13 +19,25 @@ export function HowItWorks() {
   const ref = useReveal<HTMLDivElement>();
 
   return (
-    <section className="px-5 py-20 sm:py-28" style={{ backgroundColor: "var(--paper)" }}>
+    <section
+      id="how"
+      className="px-5 py-16 sm:py-20"
+      style={{ backgroundColor: "var(--paper)" }}
+    >
       <div ref={ref} className="reveal mx-auto max-w-5xl">
-        <h2 className="mx-auto max-w-2xl text-balance text-center text-3xl font-extrabold sm:text-4xl md:text-5xl">
-          it takes about two minutes.
-        </h2>
+        <div className="mx-auto max-w-2xl text-center">
+          <p
+            className="text-sm tracking-[0.2em] uppercase"
+            style={{ color: "var(--sunset)" }}
+          >
+            two minutes, start to finish
+          </p>
+          <h2 className="mt-3 text-balance text-3xl font-extrabold sm:text-4xl md:text-5xl">
+            it's really just three steps.
+          </h2>
+        </div>
 
-        <ol className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-6">
+        <ol className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-6">
           {STEPS.map((s, i) => (
             <li key={s.head} className="relative flex flex-col items-center text-center">
               {/* stepper pip */}

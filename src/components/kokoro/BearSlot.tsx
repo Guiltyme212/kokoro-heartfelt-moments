@@ -1,38 +1,44 @@
-import { Logo } from "./Logo";
+type Variant = "peek" | "talking";
 
 type Props = {
-  /** Filename hint for the eventual video, e.g. "tea", "proud", "heart". */
-  name: string;
-  /** Aspect ratio, defaults to square. */
+  /** Which mascot clip to show. */
+  variant?: Variant;
   aspect?: string;
   className?: string;
+  /** Soft breathing on the wrapper. */
+  breathe?: boolean;
+};
+
+const SRC: Record<Variant, string> = {
+  peek: "/kokoro-peek.mp4",
+  talking: "/kokoro-talking.mp4",
 };
 
 /**
- * Sacred mascot slot. Renders a cream square with the 心 watermark and slow
- * breathing. Replace the inner placeholder with a <video> or <img> when the
- * real mascot asset is wired in — keep the .bear-slot wrapper (cream bg +
- * multiply + feather mask) so cream-baked assets blend cleanly.
+ * Sacred mascot slot. Cream-baked video on a cream surface with multiply
+ * blend + radial feather mask so any cream halo dissolves.
  */
-export function BearSlot({ name, aspect = "1 / 1", className = "" }: Props) {
+export function BearSlot({
+  variant = "peek",
+  aspect = "1 / 1",
+  className = "",
+  breathe = true,
+}: Props) {
   return (
     <div
-      className={`bear-slot ${className}`}
+      className={`bear-slot ${breathe ? "breathe" : ""} ${className}`}
       style={{ aspectRatio: aspect }}
       aria-hidden="true"
     >
-      {/* // replace with kokoro-{name}.mp4 */}
-      <div className="bear-media flex h-full w-full items-center justify-center">
-        <div className="breathe flex flex-col items-center gap-3 opacity-70">
-          <Logo size={84} />
-          <span
-            className="text-xs tracking-widest uppercase"
-            style={{ color: "var(--moss)" }}
-          >
-            kokoro · {name}
-          </span>
-        </div>
-      </div>
+      <video
+        className="bear-media h-full w-full object-cover"
+        src={SRC[variant]}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      />
     </div>
   );
 }

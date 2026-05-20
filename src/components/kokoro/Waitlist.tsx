@@ -21,11 +21,18 @@ export function Waitlist() {
   };
 
   return (
-    <section id="waitlist" className="px-5 py-24 sm:py-32">
+    <section
+      id="waitlist"
+      className="relative overflow-hidden px-5 py-20 sm:py-24"
+      style={{
+        background:
+          "radial-gradient(80% 60% at 50% 0%, color-mix(in oklab, var(--mustard) 55%, transparent) 0%, transparent 60%), var(--cream-warm)",
+      }}
+    >
       <div ref={ref} className="reveal mx-auto max-w-2xl text-center">
-        <div className="mx-auto mb-10 w-40 sm:w-48">
-          <BearSlot name="peeking" />
-        </div>
+          <div className="mx-auto mb-8 w-40 sm:w-48">
+            <BearSlot variant="peek" />
+          </div>
 
         <p
           className="text-sm tracking-widest uppercase"
