@@ -4,18 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+/* Kokoro design system — locked palette + type from the spec.
+ * Palette: ink, moss, mustard, sunset, coral, cream, cream-warm.
+ * Type:    Noto Sans Rounded (display + body), Noto Sans JP (心/kana).
  */
 
 @theme inline {
@@ -59,42 +50,63 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-ink: var(--ink);
+  --color-moss: var(--moss);
+  --color-mustard: var(--mustard);
+  --color-sunset: var(--sunset);
+  --color-coral: var(--coral);
+  --color-cream: var(--cream);
+  --color-cream-warm: var(--cream-warm);
+  --color-paper: var(--paper);
+  --font-display: "Noto Sans Rounded", "Nunito", "Noto Sans JP", system-ui, sans-serif;
+  --font-sans: "Noto Sans Rounded", "Nunito", "Noto Sans JP", system-ui, sans-serif;
+  --font-jp: "Noto Sans JP", "Nunito", system-ui, sans-serif;
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --radius: 0.875rem;
+  /* raw palette */
+  --ink: oklch(0.205 0 0);              /* #1E1E1E */
+  --moss: oklch(0.555 0.045 121);       /* #6B7A5A */
+  --mustard: oklch(0.82 0.142 88);      /* #F2C54E */
+  --sunset: oklch(0.74 0.155 45);       /* #F08A5D */
+  --coral: oklch(0.83 0.062 30);        /* #FFB5A7 */
+  --cream: oklch(0.962 0.018 88);       /* #F7F2E7 */
+  --cream-warm: oklch(0.945 0.035 80);  /* slightly deeper cream */
+  --paper: oklch(0.985 0.012 90);
+  /* semantic */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--mustard);
+  --primary-foreground: var(--ink);
+  --secondary: var(--moss);
+  --secondary-foreground: var(--cream);
+  --muted: oklch(0.93 0.02 85);
+  --muted-foreground: oklch(0.42 0.02 90);
+  --accent: var(--sunset);
+  --accent-foreground: var(--cream);
+  --destructive: oklch(0.6 0.2 25);
+  --destructive-foreground: var(--cream);
+  --border: oklch(0.88 0.025 85);
+  --input: oklch(0.88 0.025 85);
+  --ring: var(--mustard);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --sidebar: var(--cream);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--mustard);
+  --sidebar-primary-foreground: var(--ink);
+  --sidebar-accent: var(--moss);
+  --sidebar-accent-foreground: var(--cream);
+  --sidebar-border: oklch(0.88 0.025 85);
+  --sidebar-ring: var(--mustard);
 }
 
 .dark {
@@ -140,5 +152,101 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "ss02";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+  }
+}
+
+/* ── Kokoro components ─────────────────────────────────────────── */
+
+/* Bear slot: sacred placeholder for mascot media.
+   Asset files have baked-in cream — must sit on a cream square with
+   multiply blend + radial feather so any cream halo dissolves. */
+.bear-slot {
+  position: relative;
+  background-color: var(--cream);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 62%, transparent 100%);
+          mask-image: radial-gradient(ellipse at center, black 62%, transparent 100%);
+}
+.bear-slot > .bear-media {
+  mix-blend-mode: multiply;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* slow 6s breathing */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}
+.breathe { animation: breathe 6s ease-in-out infinite; transform-origin: center; }
+
+/* 600ms fade-in on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+  will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* mustard pill button */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  border-radius: 9999px;
+  background-color: var(--mustard);
+  color: var(--ink);
+  font-weight: 600;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+.btn-pill:hover { transform: translateY(-1px); filter: brightness(0.97); }
+.btn-pill:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent);
+  color: var(--ink);
+  font-weight: 500;
+  transition: background-color 180ms ease;
+}
+.btn-ghost:hover { background-color: color-mix(in oklab, var(--ink) 6%, transparent); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.95rem;
+  border-radius: 9999px;
+  background-color: var(--paper);
+  border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+  color: var(--ink);
+  font-size: 0.95rem;
+  transition: all 180ms ease;
+}
+.chip:hover { transform: translateY(-1px); }
+.chip.is-active {
+  background-color: var(--mustard);
+  border-color: transparent;
 }

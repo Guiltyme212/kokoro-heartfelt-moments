@@ -1,26 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Header } from "@/components/kokoro/Header";
+import { Hero } from "@/components/kokoro/Hero";
+import { Modes } from "@/components/kokoro/Modes";
+import { HowItWorks } from "@/components/kokoro/HowItWorks";
+import { PetName } from "@/components/kokoro/PetName";
+import { MeetTheBear } from "@/components/kokoro/MeetTheBear";
+import { MantraStrip } from "@/components/kokoro/MantraStrip";
+import { WhyKokoro } from "@/components/kokoro/WhyKokoro";
+import { Waitlist } from "@/components/kokoro/Waitlist";
+import { Footer } from "@/components/kokoro/Footer";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  return (
+    <main className="relative">
+      <Header />
+      <Hero />
+      <Modes />
+      <HowItWorks />
+      <PetName />
+      <MeetTheBear />
+      <MantraStrip />
+      <WhyKokoro />
+      <Waitlist />
+      <Footer />
+    </main>
+  );
 }
