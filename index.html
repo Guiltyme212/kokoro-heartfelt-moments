@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kokoro — a meditation made from your own words.</title>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root {
+    /* normalize the cream so it matches the baked video bg exactly */
+    --cream: #FCF0DB;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body, "Fredoka", "M PLUS Rounded 1c", system-ui, sans-serif);
+    font-weight: 500;
+    line-height: 1.45;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--moss); color: var(--cream); }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- shared bits ---------- */
+  .container { width: min(1180px, 92vw); margin-inline: auto; }
+  .eyebrow {
+    font-family: var(--font-body, "Fredoka", sans-serif);
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--moss);
+  }
+  .eyebrow .dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: var(--sunset); vertical-align: middle; margin-right: 10px; transform: translateY(-1px); }
+  .display {
+    font-family: var(--font-display, "Fredoka", "M PLUS Rounded 1c", sans-serif);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: .98;
+    color: var(--ink);
+  }
+  .lede { font-size: 19px; line-height: 1.55; color: #2a2a2a; max-width: 56ch; }
+  .lede.soft { color: #3a3a3a; }
+  .small { font-size: 13.5px; color: rgba(27,27,27,.6); }
+
+  /* ---------- top nav ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    padding: 14px 0;
+    background: rgba(252, 240, 219, .78);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(27,27,27,.06);
+  }
+  .topnav .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; }
+  .brand .glyph {
+    width: 30px; height: 30px; border-radius: 999px;
+    background: var(--mustard);
+    display: grid; place-items: center;
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900; color: var(--ink); font-size: 16px;
+    box-shadow: 0 2px 0 rgba(27,27,27,.08);
+  }
+  .brand .name { font-family: var(--font-display); font-weight: 800; letter-spacing: -.01em; font-size: 18px; }
+  .brand .name small { font-weight: 500; color: rgba(27,27,27,.5); margin-left: 6px; font-size: 13px; letter-spacing: 0; }
+
+  .navlinks { display: flex; align-items: center; gap: 28px; }
+  .navlinks a { font-weight: 500; font-size: 14.5px; color: rgba(27,27,27,.72); transition: color .2s ease; }
+  .navlinks a:hover { color: var(--ink); }
+  .navlinks a.nav-cta {
+    padding: 9px 16px; border-radius: 999px;
+    background: var(--ink); color: var(--cream);
+    font-weight: 600; font-size: 13.5px;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: transform .15s ease, box-shadow .2s ease;
+  }
+  .navlinks a.nav-cta:hover { color: var(--cream); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(27,27,27,.18); }
+  @media (max-width: 720px) { .navlinks a:not(.nav-cta) { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: 96px 0 72px;
+    overflow: hidden;
+    min-height: 720px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 32px;
+    align-items: center;
+  }
+  @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; gap: 8px; } }
+
+  .hero-copy { position: relative; z-index: 4; }
+  .hero h1 {
+    font-size: clamp(56px, 8.2vw, 116px);
+    margin: 14px 0 22px;
+  }
+  .hero h1 .jp {
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900;
+    color: var(--sunset);
+    font-size: .72em;
+    letter-spacing: 0;
+    margin-right: .12em;
+    display: inline-block;
+    transform: translateY(.04em);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--moss-dark, #5e6b48);
+  }
+  .hero .lede { font-size: clamp(18px, 1.6vw, 21px); max-width: 46ch; }
+
+  /* spacer column to balance the grid where the mascot floats */
+  .hero-mascot-anchor { position: relative; height: 540px; }
+  @media (max-width: 920px) { .hero-mascot-anchor { height: 380px; } }
+
+  /* PEEK WRAP — lifted verbatim from the Welcome Screen technique.
+     Anchored past the right edge so the right side is off-screen (no hard edge to see).
+     Mask fades to transparent on left/top/bottom — inner-facing sides dissolve into cream. */
+  .peek-wrap--right {
+    position: absolute;
+    right: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(420px, 46vw, 640px);
+    height: clamp(420px, 46vw, 640px);
+    z-index: 3;
+    pointer-events: none;
+    -webkit-mask-image:
+      linear-gradient(to right,  transparent 0%, #000 38%, #000 100%),
+      linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    -webkit-mask-composite: source-in;
+            mask-image:
+      linear-gradient(to right,  transparent 0%, #000 38%, #000 100%),
+      linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%);
+            mask-composite: intersect;
+  }
+  .peek-wrap--right video, .peek-wrap--right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+  @media (max-width: 920px) {
+    .peek-wrap--right { right: -40px; top: auto; bottom: -40px; transform: none; width: 360px; height: 360px; }
+  }
+
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+  .store-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 20px 12px 18px;
+    border-radius: 16px;
+    background: var(--ink);
+    color: var(--cream);
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+    box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 12px 28px -10px rgba(27,27,27,.32);
+  }
+  .store-btn:hover { transform: translateY(-2px); box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 18px 32px -10px rgba(27,27,27,.38); }
+  .store-btn:active { transform: translateY(0); }
+  .store-btn .ico { width: 26px; height: 26px; display: grid; place-items: center; }
+  .store-btn .lbl { display: flex; flex-direction: column; line-height: 1; }
+  .store-btn .lbl small { font-size: 10.5px; opacity: .65; letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+  .store-btn .lbl span { font-size: 17px; font-weight: 600; margin-top: 3px; letter-spacing: -.01em; }
+  .store-btn.tf { background: var(--sunset); color: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 14px 30px -10px rgba(252,103,8,.55); }
+  .store-btn.tf:hover { box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 20px 36px -10px rgba(252,103,8,.65); }
+  .store-btn.tf .tag { background: rgba(255,255,255,.18); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .14em; padding: 3px 7px; border-radius: 999px; margin-left: 6px; }
+
+  .hero-meta { display: flex; align-items: center; gap: 14px; margin-top: 22px; color: rgba(27,27,27,.65); font-size: 13.5px; }
+  .hero-meta .stars { color: var(--mustard-dark, #c79a2e); letter-spacing: 2px; }
+  .hero-meta .sep { width: 4px; height: 4px; border-radius: 999px; background: rgba(27,27,27,.25); }
+
+  /* the peeking mascot — styling lives in .peek-wrap--right above */
+
+  /* shared kokoro-slot — radial feather mask, multiply against the cream page */
+  .kokoro-slot {
+    position: absolute; inset: 0;
+    -webkit-mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 60%, transparent 94%);
+            mask-image: radial-gradient(ellipse 62% 62% at 50% 50%, #000 60%, transparent 94%);
+  }
+  .kokoro-slot video, .kokoro-slot img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+
+  /* hero ornaments */
+  .sun {
+    position: absolute;
+    right: 9%; top: -200px;
+    width: 1040px; height: 1040px;
+    background: url('assets/sun.png') center/contain no-repeat;
+    mix-blend-mode: multiply;
+    opacity: .92;
+    pointer-events: none;
+    z-index: 2;
+    animation: sunBreathe 9s cubic-bezier(.6,.2,.2,1) infinite;
+  }
+  @media (max-width: 920px) { .sun { right: -10px; top: -110px; width: 300px; height: 300px; } }
+  @keyframes sunBreathe { 0%,100% { transform: scale(1); opacity:.82 } 50% { transform: scale(1.025); opacity:.92 } }
+
+  .sakura-tr {
+    position: absolute;
+    right: -30px; top: -50px;
+    width: 320px;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: .85;
+    z-index: 1;
+    transform: rotate(-4deg);
+  }
+  @media (max-width: 920px) { .sakura-tr { width: 220px; right: -20px; top: -10px; } }
+
+  .bonsai-floor {
+    position: absolute;
+    right: 28%; bottom: 120px;
+    width: 220px;
+    mix-blend-mode: multiply;
+    z-index: 2;
+    pointer-events: none;
+    opacity: .95;
+  }
+  @media (max-width: 920px) { .bonsai-floor { right: auto; left: 8px; bottom: -6px; width: 130px; } }
+
+  /* drifting petals */
+  .petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+  .petal {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: radial-gradient(ellipse at 30% 30%, #ffcfd6 0%, #f8a8b6 60%, #d97186 100%);
+    border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+    opacity: .55;
+    mix-blend-mode: multiply;
+    animation: petalDrift linear infinite;
+    filter: blur(.3px);
+  }
+  @keyframes petalDrift {
+    0%   { transform: translate3d(0,-40px,0) rotate(0deg); }
+    50%  { transform: translate3d(20px,40vh,0) rotate(180deg); }
+    100% { transform: translate3d(-10px,90vh,0) rotate(360deg); }
+  }
+
+  /* speech bubble removed per design — mascot speaks via the headline copy */
+
+  /* ---------- divider / scroll cue ---------- */
+  .scrollcue { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 12px; color: rgba(27,27,27,.45); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+  .scrollcue .line { width: 1px; height: 36px; background: linear-gradient(180deg, rgba(27,27,27,.35), transparent); }
+
+  /* ---------- ritual section ---------- */
+  .ritual { padding: 88px 0 64px; position: relative; }
+  .section-head { display: flex; flex-direction: column; gap: 12px; max-width: 780px; }
+  .section-head h2 { font-size: clamp(36px, 4.8vw, 64px); margin: 0; }
+  .section-head h2 em { font-style: normal; color: var(--moss-dark, #5e6b48); }
+
+  .ritual-grid {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  @media (max-width: 920px) { .ritual-grid { grid-template-columns: 1fr; } }
+  .step {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(27,27,27,.08);
+    border-radius: 24px;
+    padding: 26px 24px 24px;
+    box-shadow: 0 2px 0 rgba(27,27,27,.04), 0 18px 40px -22px rgba(27,27,27,.18);
+    overflow: hidden;
+    transition: transform .25s cubic-bezier(.6,.2,.2,1), box-shadow .25s ease;
+  }
+  .step:hover { transform: translateY(-4px); box-shadow: 0 2px 0 rgba(27,27,27,.04), 0 28px 50px -22px rgba(27,27,27,.28); }
+  .step .num {
+    font-family: var(--font-mono, "JetBrains Mono", monospace);
+    font-size: 12px; color: var(--sunset); font-weight: 600; letter-spacing: .1em;
+  }
+  .step h3 {
+    font-family: var(--font-display); font-weight: 800; letter-spacing: -.015em;
+    font-size: 26px; line-height: 1.05; margin: 8px 0 8px;
+  }
+  .step p { margin: 0 0 18px; color: rgba(27,27,27,.74); font-size: 15px; line-height: 1.5; }
+  .step .vid {
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    position: relative;
+    background: var(--cream);
+    overflow: hidden;
+  }
+  .step .vid video { border-radius: inherit; }
+  .step .vid video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 40%;
+    mix-blend-mode: multiply;
+  }
+  .step.featured { background: var(--moss); color: var(--cream); border-color: transparent; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 24px 50px -22px rgba(120,120,56,.55); }
+  .step.featured h3 { color: var(--cream); }
+  .step.featured p { color: rgba(252,240,219,.82); }
+  .step.featured .num { color: var(--mustard); }
+  /* mascot sits inside a cream pocket so multiply still works against cream */
+  .step.featured .vid { background: var(--cream); border-radius: 999px; }
+  .step.featured .vid::before {
+    /* soft mustard halo behind the pocket so the cream circle feels lit, not pasted */
+    content: "";
+    position: absolute; inset: -8%;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(236,195,74,.45) 0%, rgba(236,195,74,0) 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .step.featured .vid video { position: relative; z-index: 1; }
+
+  /* ---------- friends (the voices) ---------- */
+  .friends { padding: 88px 0 56px; position: relative; }
+  .friends-grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 920px) { .friends-grid { grid-template-columns: 1fr; } }
+
+  .friend {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(27,27,27,.08);
+    border-radius: 24px;
+    padding: 28px 26px 26px;
+    display: flex; flex-direction: column;
+    gap: 14px;
+    min-height: 360px;
+    overflow: hidden;
+    transition: transform .25s cubic-bezier(.6,.2,.2,1), box-shadow .25s ease;
+    box-shadow: 0 1px 0 rgba(27,27,27,.03), 0 18px 40px -22px rgba(27,27,27,.18);
+  }
+  .friend:hover { transform: translateY(-4px); box-shadow: 0 1px 0 rgba(27,27,27,.04), 0 28px 50px -22px rgba(27,27,27,.28); }
+
+  .friend .glyph-bg {
+    position: absolute;
+    right: -22px; bottom: -36px;
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900;
+    font-size: 220px;
+    line-height: 1;
+    opacity: .07;
+    pointer-events: none;
+    color: var(--ink);
+  }
+
+  .friend-num {
+    font-family: var(--font-mono, monospace);
+    font-size: 11.5px;
+    color: rgba(27,27,27,.45);
+    font-weight: 600;
+    letter-spacing: .14em;
+  }
+  .friend-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    margin: 0;
+  }
+  .friend-line {
+    font-family: var(--font-display);
+    font-size: 19px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    max-width: 18ch;
+  }
+  .friend-bio {
+    margin: 0;
+    font-size: 14.5px; line-height: 1.5;
+    color: rgba(27,27,27,.7);
+  }
+  .friend-tag {
+    margin-top: auto;
+    font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--sunset);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .friend-tag .dot { width: 5px; height: 5px; border-radius: 999px; background: currentColor; display: inline-block; }
+
+  /* variant: gen z raw — dark ink card */
+  .friend--raw { background: var(--ink); color: var(--cream); border-color: transparent; }
+  .friend--raw .friend-num { color: rgba(252,240,219,.5); }
+  .friend--raw .friend-name { color: var(--cream); }
+  .friend--raw .friend-line { color: var(--mustard); }
+  .friend--raw .friend-bio { color: rgba(252,240,219,.72); }
+  .friend--raw .friend-tag { color: var(--sunset); }
+  .friend--raw .glyph-bg { color: var(--cream); opacity: .08; }
+
+  /* variant: spiritual cosmic — moss */
+  .friend--cosmic { background: var(--moss); color: var(--cream); border-color: transparent; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 22px 44px -22px rgba(120,120,56,.45); }
+  .friend--cosmic .friend-num { color: rgba(252,240,219,.55); }
+  .friend--cosmic .friend-name { color: var(--cream); }
+  .friend--cosmic .friend-line { color: var(--mustard); }
+  .friend--cosmic .friend-bio { color: rgba(252,240,219,.78); }
+  .friend--cosmic .friend-tag { color: var(--mustard); }
+  .friend--cosmic .glyph-bg { color: var(--cream); opacity: .1; }
+
+  /* variant: drift bedtime — warm cream */
+  .friend--drift { background: var(--cream-warm, #f4e3c3); border-color: transparent; }
+  .friend--drift .friend-line { color: var(--sunset); }
+  .friend--drift .friend-tag { color: var(--moss-dark, #5e6b48); }
+
+  .friends-more {
+    margin-top: 28px;
+    text-align: center;
+    color: rgba(27,27,27,.42);
+    font-size: 11.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .friends-more span { color: var(--sunset); }
+
+  /* ---------- promise / pull quote ---------- */
+  .promise { padding: 56px 0 72px; position: relative; }
+  .promise-box {
+    background: var(--cream-warm, #f4e3c3);
+    border-radius: 28px;
+    padding: 56px clamp(28px, 5vw, 80px);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(27,27,27,.06);
+  }
+  .promise-box .ornament-lantern {
+    position: absolute; right: -20px; bottom: -30px;
+    width: 220px;
+    mix-blend-mode: multiply;
+    opacity: .92;
+    pointer-events: none;
+  }
+  .promise-box .ornament-sakura {
+    position: absolute; left: -90px; top: -60px;
+    width: 360px;
+    mix-blend-mode: multiply;
+    opacity: .85;
+    pointer-events: none;
+    transform: rotate(8deg);
+  }
+  .promise-box blockquote {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(28px, 3.6vw, 50px);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    max-width: 22ch;
+    position: relative;
+  }
+  .promise-box blockquote em { font-style: normal; color: var(--sunset); }
+  .promise-box .attrib {
+    margin-top: 22px; font-size: 13px; letter-spacing: .14em;
+    text-transform: uppercase; font-weight: 700; color: rgba(27,27,27,.55);
+  }
+
+  /* ---------- library preview ---------- */
+  .library { padding: 80px 0 64px; position: relative; }
+  .library-grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (max-width: 920px) { .library-grid { grid-template-columns: 1fr; } }
+
+  .meditation-stack { display: flex; flex-direction: column; gap: 12px; }
+  .med-card {
+    background: #fff;
+    border: 1px solid rgba(27,27,27,.08);
+    border-radius: 20px;
+    padding: 16px 18px;
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 0 rgba(27,27,27,.04);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .med-card:hover { transform: translateX(3px); box-shadow: 0 8px 24px -10px rgba(27,27,27,.18); border-color: rgba(27,27,27,.14); }
+  .med-card .glyph {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: var(--mustard-soft, #f8e8b3);
+    display: grid; place-items: center;
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900; color: var(--ink); font-size: 22px;
+  }
+  .med-card .glyph.moss { background: rgba(120,120,56,.18); color: var(--moss-dark, #5e6b48); }
+  .med-card .glyph.sunset { background: rgba(252,103,8,.14); color: var(--sunset); }
+  .med-card .glyph.cream { background: var(--cream); color: var(--ink); border: 1px solid rgba(27,27,27,.08); }
+  .med-card .info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .med-card .info .title { font-weight: 600; font-size: 16px; letter-spacing: -.005em; color: var(--ink); }
+  .med-card .info .seed { font-size: 13px; color: rgba(27,27,27,.55); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .med-card .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 11.5px; }
+  .med-card .meta .dur { font-family: var(--font-mono); color: rgba(27,27,27,.55); }
+  .med-card .meta .play {
+    width: 30px; height: 30px; border-radius: 999px;
+    background: var(--ink); color: var(--cream);
+    display: grid; place-items: center;
+  }
+  .med-card.featured { background: var(--moss); border-color: transparent; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 18px 36px -18px rgba(120,120,56,.45); }
+  .med-card.featured .info .title { color: var(--cream); }
+  .med-card.featured .info .seed { color: rgba(252,240,219,.7); }
+  .med-card.featured .meta .dur { color: rgba(252,240,219,.55); }
+  .med-card.featured .glyph { background: var(--cream); color: var(--moss-dark, #5e6b48); }
+  .med-card.featured .meta .play { background: var(--mustard); color: var(--ink); }
+
+  /* mascot column for library */
+  .library-mascot {
+    position: relative;
+    aspect-ratio: 1/1;
+    max-width: 460px;
+    margin-inline: auto;
+  }
+  .library-mascot .kokoro-slot {
+    border-radius: 28px;
+  }
+  .library-mascot .badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--cream); color: var(--ink);
+    border: 1.6px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 700; font-size: 11.5px;
+    letter-spacing: .14em; text-transform: uppercase;
+    z-index: 3;
+  }
+  .library-mascot .badge .pulse {
+    display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+    background: var(--sunset); margin-right: 7px; vertical-align: middle;
+    animation: livePulse 1.6s cubic-bezier(.6,.2,.2,1) infinite;
+    transform: translateY(-1px);
+  }
+  @keyframes livePulse { 0%, 100% { opacity: 1; transform: translateY(-1px) scale(1); } 50% { opacity: .55; transform: translateY(-1px) scale(.78); } }
+
+  /* ---------- testimonials ---------- */
+  .voices { padding: 72px 0; position: relative; }
+  .voices-grid {
+    margin-top: 44px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 920px) { .voices-grid { grid-template-columns: 1fr; } }
+  .voice {
+    background: #fff;
+    border: 1px solid rgba(27,27,27,.08);
+    border-radius: 22px;
+    padding: 22px 22px 20px;
+    position: relative;
+  }
+  .voice .stars { color: var(--mustard-dark, #c79a2e); letter-spacing: 2px; font-size: 14px; }
+  .voice blockquote { margin: 12px 0 16px; font-size: 16px; line-height: 1.5; color: var(--ink); }
+  .voice .who { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(27,27,27,.65); }
+  .voice .who .av {
+    width: 28px; height: 28px; border-radius: 999px;
+    background: var(--moss); color: var(--cream);
+    display: grid; place-items: center; font-weight: 700; font-size: 12px;
+  }
+  .voice.alt { background: var(--cream-warm, #f4e3c3); border-color: transparent; }
+  .voice.alt .who .av { background: var(--sunset); }
+  .voice.dark { background: var(--ink); color: var(--cream); border-color: transparent; }
+  .voice.dark blockquote { color: var(--cream); }
+  .voice.dark .who { color: rgba(252,240,219,.7); }
+  .voice.dark .who .av { background: var(--mustard); color: var(--ink); }
+
+  /* ---------- final download CTA ---------- */
+  .download {
+    padding: 96px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .download-card {
+    background: var(--moss);
+    color: var(--cream);
+    border-radius: 36px;
+    padding: clamp(40px, 6vw, 80px) clamp(28px, 5vw, 72px);
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 24px;
+    align-items: center;
+    box-shadow: 0 2px 0 rgba(0,0,0,.1), 0 36px 60px -28px rgba(120,120,56,.55);
+  }
+  @media (max-width: 920px) { .download-card { grid-template-columns: 1fr; padding-bottom: 0; } }
+
+  .download-card .eyebrow { color: var(--mustard); }
+  .download-card h2 { color: var(--cream); font-size: clamp(40px, 5.5vw, 76px); margin: 14px 0 18px; }
+  .download-card h2 em { font-style: normal; color: var(--mustard); }
+  .download-card p { color: rgba(252,240,219,.84); font-size: 17px; max-width: 42ch; margin: 0 0 26px; }
+
+  .download-card .cta-row .store-btn { background: var(--ink); color: var(--cream); }
+  .download-card .cta-row .store-btn:hover { background: #000; }
+  .download-card .cta-row .store-btn.tf { background: var(--sunset); color: #fff; }
+
+  .download-mascot {
+    position: relative;
+    aspect-ratio: 1/1;
+    width: 100%;
+    max-width: 420px;
+    justify-self: end;
+  }
+  @media (max-width: 920px) { .download-mascot { max-width: 360px; justify-self: center; margin-top: 16px; } }
+  /* cream pocket on the moss download card */
+  .download-mascot .kokoro-slot {
+    background: var(--cream);
+    border-radius: 999px;
+    -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 60%, transparent 92%);
+            mask-image: radial-gradient(circle at 50% 52%, #000 60%, transparent 92%);
+  }
+  .download-mascot::before {
+    content: "";
+    position: absolute; inset: -6%;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(236,195,74,.32) 0%, rgba(236,195,74,0) 68%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .download-mascot .kokoro-slot video { mix-blend-mode: multiply; }
+
+  .download .lantern-bg {
+    position: absolute;
+    right: -40px; bottom: -60px;
+    width: 280px;
+    mix-blend-mode: multiply;
+    opacity: .6;
+    pointer-events: none;
+  }
+
+  /* ---------- footer ---------- */
+  .footer { padding: 36px 0 64px; color: rgba(27,27,27,.55); font-size: 13px; }
+  .footer .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
+  .footer .links { display: flex; gap: 22px; }
+  .footer .links a:hover { color: var(--ink); }
+  .footer .heart { color: var(--sunset); }
+
+  /* content is always visible — no entry animation, just live mascot motion */
+  .reveal { opacity: 1; transform: none; }
+
+  /* slight bob on mascot peek to feel alive */
+  @keyframes mascotBob { 0%,100% { transform: translateY(-50%) } 50% { transform: translateY(calc(-50% - 4px)) } }
+  .peek-wrap--right { animation: mascotBob 6s cubic-bezier(.6,.2,.2,1) infinite; }
+  @media (max-width: 920px) { .peek-wrap--right { animation: none; } }
+</style>
+</head>
+<body>
+
+  <!-- top nav -->
+  <header class="topnav" data-screen-label="01 Nav">
+    <div class="container row">
+      <a class="brand" href="#top">
+        <span class="glyph">心</span>
+        <span class="name">Kokoro <small>(こころ)</small></span>
+      </a>
+      <nav class="navlinks">
+        <a href="#ritual">The ritual</a>
+        <a href="#friends">His friends</a>
+        <a class="nav-cta" href="#download">Get the app
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top" data-screen-label="02 Hero">
+    <div class="sun" aria-hidden="true"></div>
+    <img class="sakura-tr" src="assets/sakura-branch.png" alt="" aria-hidden="true"/>
+    <img class="bonsai-floor" src="assets/bonsai.png" alt="" aria-hidden="true"/>
+    <div class="petals" id="petals" aria-hidden="true"></div>
+
+    <div class="container hero-grid">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="dot"></span>NOW IN TESTFLIGHT · IOS</div>
+        <h1 class="display">
+          <span class="jp">心</span>tell me<br/>
+          one true thing<br/>
+          <em>and i'll make you<br/>something.</em>
+        </h1>
+        <p class="lede">
+          a small tanuki-monk who lived in a mountain temple for a long time, and now lives in your phone. tell him how you're carrying, and he'll hand you to the right friend.
+        </p>
+
+        <div class="cta-row">
+          <a class="store-btn" href="#" aria-label="Download on the App Store">
+            <span class="ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M17.523 12.62a4.748 4.748 0 0 1 2.265-3.985 4.86 4.86 0 0 0-3.832-2.072c-1.614-.169-3.18.964-4.003.964-.839 0-2.105-.94-3.471-.913a5.099 5.099 0 0 0-4.293 2.618c-1.853 3.21-.471 7.94 1.32 10.541.879 1.27 1.91 2.694 3.272 2.643 1.328-.054 1.823-.85 3.422-.85 1.584 0 2.05.85 3.435.82 1.43-.025 2.31-1.282 3.16-2.555.668-1.001 1.182-2.104 1.521-3.27a4.587 4.587 0 0 1-2.796-4.218zM15.36 4.93A4.553 4.553 0 0 0 16.428 1.5c-1.07.121-2.052.626-2.78 1.426-.708.769-1.13 1.806-1.073 2.857 1.107.013 2.166-.487 2.785-1.353z"/>
+              </svg>
+            </span>
+            <span class="lbl"><small>Download on the</small><span>App Store</span></span>
+          </a>
+          <a class="store-btn tf" href="#" aria-label="Try the TestFlight beta">
+            <span class="ico">
+              <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                <g transform="translate(12 12)" fill="currentColor">
+                  <!-- 4 propeller blades meeting at center -->
+                  <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z"/>
+                  <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(90)"/>
+                  <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(180)"/>
+                  <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(270)"/>
+                  <circle r="1.6" fill="rgba(255,255,255,.95)"/>
+                </g>
+              </svg>
+            </span>
+            <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
+            <span class="tag">EARLY</span>
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <span class="stars">★★★★★</span>
+          <span>4.9 · loved by 12,400 quiet humans</span>
+          <span class="sep"></span>
+          <span>free to start</span>
+        </div>
+      </div>
+
+      <div class="hero-mascot-anchor" aria-hidden="true"></div>
+    </div>
+
+    <!-- mascot anchored to the page right edge — peek-wrap technique from welcome screen -->
+    <div class="peek-wrap peek-wrap--right" id="hero-peek">
+      <video autoplay loop muted playsinline poster="assets/kokoro-peak.png">
+        <source src="assets/kokoro-peek-talk.mp4" type="video/mp4"/>
+      </video>
+    </div>
+    </div>
+
+    <!-- scroll cue removed -->
+  </section>
+
+  <!-- RITUAL -->
+  <section class="ritual" id="ritual" data-screen-label="03 Ritual">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>THE RITUAL · THREE QUIET STEPS</div>
+        <h2 class="display">three minutes.<br/><em>one true sentence.</em></h2>
+        <p class="lede soft">no scripts. no streaks to keep. kokoro asks how you're carrying, listens, and picks the friend whose voice fits tonight.</p>
+      </div>
+
+      <div class="ritual-grid">
+        <div class="step reveal">
+          <span class="num">01 / SPEAK</span>
+          <h3>tap the mic.<br/>say one real thing.</h3>
+          <p>"i'm tired" works. so does "i don't know". whatever you tell Kokoro stays here. nothing is shared, nothing is scored.</p>
+          <div class="vid">
+            <video autoplay loop muted playsinline poster="assets/kokoro-float.png">
+              <source src="assets/kokoro-bow-walk.mp4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+
+        <div class="step featured reveal">
+          <span class="num">02 / LISTEN</span>
+          <h3>kokoro listens.<br/>picks the friend that fits.</h3>
+          <p>he doesn't lead the meditations himself. he greets you, figures out what you need, then hands you to one of his friends — someone with the right voice for tonight.</p>
+          <div class="vid">
+            <video autoplay loop muted playsinline poster="assets/kokoro-peak.png">
+              <source src="assets/kokoro-peak.mp4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <span class="num">03 / SIT</span>
+          <h3>a friend's voice.<br/>made for this evening.</h3>
+          <p>three to seven minutes. gen z raw, cosmic, or whisper-to-sleep — different rhythms for different nights. tomorrow yours will sound different, because tomorrow you'll be different.</p>
+          <div class="vid">
+            <video autoplay loop muted playsinline poster="assets/kokoro-meditate.png">
+              <source src="assets/kokoro-meditate.mp4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRIENDS — the voices kokoro hands you to -->
+  <section class="friends" id="friends" data-screen-label="04 Friends">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>HIS FRIENDS · THE VOICES</div>
+        <h2 class="display">kokoro doesn't lead.<br/><em>his friends do.</em></h2>
+        <p class="lede soft">he's the one who greets you and figures out what you need. then he hands you to whoever fits — they each have their own way of getting through.</p>
+      </div>
+
+      <div class="friends-grid">
+        <article class="friend friend--raw reveal">
+          <span class="glyph-bg" aria-hidden="true">生</span>
+          <div class="friend-num">VOICE 01 · ACTIVE</div>
+          <h3 class="friend-name">gen z · raw</h3>
+          <p class="friend-line">“yeah this sucks. okay. sit down.”</p>
+          <p class="friend-bio">doesn't sugarcoat. slangy, blunt, occasionally crude. says the quiet part out loud. “meditation of not giving a fuck” lives here.</p>
+          <div class="friend-tag"><span class="dot"></span>for: when you've been polite all day</div>
+        </article>
+
+        <article class="friend friend--cosmic reveal">
+          <span class="glyph-bg" aria-hidden="true">宇</span>
+          <div class="friend-num">VOICE 02 · ACTIVE</div>
+          <h3 class="friend-name">spiritual · cosmic</h3>
+          <p class="friend-line">“you are very small. that's the good news.”</p>
+          <p class="friend-bio">goes wide. stars, scale, the very small you inside the very big everything. zooms out until your day fits in your hand.</p>
+          <div class="friend-tag"><span class="dot"></span>for: when the day feels too big</div>
+        </article>
+
+        <article class="friend friend--drift reveal">
+          <span class="glyph-bg" aria-hidden="true">夜</span>
+          <div class="friend-num">VOICE 03 · ACTIVE</div>
+          <h3 class="friend-name">drift · bedtime</h3>
+          <p class="friend-line">“the day is over. you can put it down.”</p>
+          <p class="friend-bio">whispers you under. slow, low, soft. made for the edge of sleep — a voice you can barely hear, on purpose.</p>
+          <div class="friend-tag"><span class="dot"></span>for: three nights without sleep</div>
+        </article>
+      </div>
+
+      <p class="friends-more">more friends coming · hard mode · iron · zen · 禅 · hold · soft · vision · light</p>
+    </div>
+  </section>
+
+  <!-- PROMISE -->
+  <section class="promise" data-screen-label="05 Promise">
+    <div class="container">
+      <div class="promise-box reveal">
+        <img class="ornament-sakura" src="assets/sakura-branch.png" alt="" aria-hidden="true"/>
+        <img class="ornament-lantern" src="assets/lantern.png" alt="" aria-hidden="true"/>
+        <div class="eyebrow"><span class="dot"></span>A SMALL PROMISE</div>
+        <blockquote>
+          "i won't try to fix you. i'll just <em>listen</em> — and make you something."
+        </blockquote>
+        <div class="attrib">— Kokoro, on day one</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOICES -->
+  <section class="voices" id="voices" data-screen-label="07 Voices">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>QUIET LETTERS · FROM EARLY USERS</div>
+        <h2 class="display">people are using it<br/><em>at 11pm, mostly.</em></h2>
+      </div>
+
+      <div class="voices-grid">
+        <div class="voice reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"the first app that didn't try to fix me. i told it one thing and it made me a meditation about letting the day be over. i actually cried."</blockquote>
+          <div class="who"><span class="av">M</span><span>Mira · designer, kyoto</span></div>
+        </div>
+        <div class="voice alt reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"i don't journal. i don't meditate. but i talk to Kokoro most nights. it's like leaving a note for myself in someone else's handwriting."</blockquote>
+          <div class="who"><span class="av">J</span><span>Jules · 6-month beta</span></div>
+        </div>
+        <div class="voice dark reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>"the little monk is unreasonably comforting. but the meditations are the thing. i told him 'i'm carrying everyone' and he handed me to the cosmic friend. i couldn't write that for myself."</blockquote>
+          <div class="who"><span class="av">A</span><span>Ana · therapist (off the clock)</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="download" id="download" data-screen-label="08 Download">
+    <img class="lantern-bg" src="assets/lantern.png" alt="" aria-hidden="true"/>
+    <div class="container">
+      <div class="download-card reveal">
+        <div>
+          <div class="eyebrow"><span class="dot" style="background:var(--mustard)"></span>READY WHEN YOU ARE</div>
+          <h2 class="display">tonight,<br/>tell Kokoro <em>one true thing.</em></h2>
+          <p>free to start. nothing tracked, nothing shared. the beta is open and the app is in review — pick whichever feels right.</p>
+          <div class="cta-row">
+            <a class="store-btn" href="#" aria-label="Download on the App Store">
+              <span class="ico">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 12.62a4.748 4.748 0 0 1 2.265-3.985 4.86 4.86 0 0 0-3.832-2.072c-1.614-.169-3.18.964-4.003.964-.839 0-2.105-.94-3.471-.913a5.099 5.099 0 0 0-4.293 2.618c-1.853 3.21-.471 7.94 1.32 10.541.879 1.27 1.91 2.694 3.272 2.643 1.328-.054 1.823-.85 3.422-.85 1.584 0 2.05.85 3.435.82 1.43-.025 2.31-1.282 3.16-2.555.668-1.001 1.182-2.104 1.521-3.27a4.587 4.587 0 0 1-2.796-4.218zM15.36 4.93A4.553 4.553 0 0 0 16.428 1.5c-1.07.121-2.052.626-2.78 1.426-.708.769-1.13 1.806-1.073 2.857 1.107.013 2.166-.487 2.785-1.353z"/></svg>
+              </span>
+              <span class="lbl"><small>Download on the</small><span>App Store</span></span>
+            </a>
+            <a class="store-btn tf" href="#" aria-label="Try the TestFlight beta">
+              <span class="ico">
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                  <g transform="translate(12 12)" fill="currentColor">
+                    <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z"/>
+                    <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(90)"/>
+                    <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(180)"/>
+                    <path d="M0 -1.2 C 3.4 -3, 4.6 -6.4, 3.6 -10 C 0 -8.4, -3.4 -5, -3.4 -1.4 Z" transform="rotate(270)"/>
+                    <circle r="1.6" fill="rgba(255,255,255,.95)"/>
+                  </g>
+                </svg>
+              </span>
+              <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
+              <span class="tag">EARLY</span>
+            </a>
+          </div>
+        </div>
+        <div class="download-mascot">
+          <div class="kokoro-slot">
+            <video autoplay loop muted playsinline poster="assets/kokoro-float.png">
+              <source src="assets/kokoro-heart.mp4" type="video/mp4"/>
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" data-screen-label="09 Footer">
+    <div class="container row">
+      <div>
+        <a class="brand" href="#top">
+          <span class="glyph">心</span>
+          <span class="name">Kokoro</span>
+        </a>
+        <div class="small" style="margin-top:6px">made with a <span class="heart">♥</span> in kyoto · tokyo · brooklyn</div>
+      </div>
+      <div class="links">
+        <a href="#">privacy</a>
+        <a href="#">terms</a>
+        <a href="#">press</a>
+        <a href="mailto:hello@kokoro.app">say hi</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // gentle petals
+  (function makePetals(){
+    const layer = document.getElementById('petals');
+    if (!layer) return;
+    const N = 14;
+    for (let i = 0; i < N; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      const left = Math.random() * 100;
+      const size = 7 + Math.random() * 12;
+      const dur = 18 + Math.random() * 16;
+      const delay = -Math.random() * dur;
+      const op = .25 + Math.random() * .45;
+      p.style.left = left + '%';
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.opacity = op;
+      p.style.animationDuration = dur + 's';
+      p.style.animationDelay = delay + 's';
+      p.style.top = (-10 - Math.random() * 40) + 'px';
+      layer.appendChild(p);
+    }
+  })();
+
+  // reveals removed — now handled by pure CSS animation so they always play
+</script>
+</body>
+</html>

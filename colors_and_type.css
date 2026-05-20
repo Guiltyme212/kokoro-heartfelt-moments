@@ -1,0 +1,152 @@
+/* =====================================================
+   Kokoro — Design tokens (colors + type)
+   Two surfaces share this token sheet:
+     · .kokoro-app  — Mobile app (cream/warm, daylight)
+     · .kokoro-dark — Telegram Mini App (intimate dark)
+   Default :root values match the mobile app.
+   ===================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&family=Noto+Sans+JP:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ===== Ink (text + lines, mobile app) ===== */
+  --ink:           #1B1B1B;
+  --ink-1:         #2A2A2A;
+  --ink-muted:     #5C5852;
+  --ink-soft:      #8A847B;
+  --ink-faint:     #B0AB9F;
+  --hairline:        rgba(27,27,27,.08);
+  --hairline-strong: rgba(27,27,27,.14);
+
+  /* ===== Moss (calm, supportive, secondary action) ===== */
+  --moss:        #787838;
+  --moss-1:      #8A8A4B;
+  --moss-2:      #A4A46C;
+  --moss-soft:   #C6C7A3;
+  --moss-cream:  #DFDFC8;
+  --moss-dark:   #5C5C28;
+
+  /* ===== Mustard (primary CTA, warmth) ===== */
+  --mustard:        #ECC34A;
+  --mustard-1:      #F2D072;
+  --mustard-soft:   #F8E3A8;
+  --mustard-cream:  #F9EBC4;
+  --mustard-dark:   #C9A22F;
+
+  /* ===== Sunset / Coral (mic, active, alert, heart) ===== */
+  --sunset:      #FC6708;
+  --sunset-soft: #FDA66B;
+  --coral:       #FFB5A7;
+  --coral-soft:  #FFD3C9;
+
+  /* ===== Cream / paper (canvas — matches baked-in video bg) ===== */
+  --cream:       #FCF0DB;   /* primary canvas — the exact color the mascot mp4s are rendered on. Sample any video corner, you get this. */
+  --cream-warm:  #EFE1C5;
+  --cream-deep:  #E6D6B6;
+  --paper:       #FBF5E7;
+  --paper-card:  #FFFFFF;
+
+  /* ===== Mini-App dark palette ===== */
+  --dark:        #0E0A09;   /* page bg */
+  --dark-1:      #1A1411;   /* card / panel bg */
+  --dark-2:      #2A1F1A;   /* lifted surfaces */
+  --dark-line:   rgba(255,255,255,.08);
+  --dark-line-2: rgba(255,255,255,.14);
+  --dark-text:   #F2E6D6;   /* primary text on dark */
+  --dark-muted:  #B8A597;
+  --dark-soft:   #7E6D62;
+
+  /* ===== Shadows ===== */
+  --shadow-card:  0 1px 2px rgba(27,27,27,.04), 0 8px 24px -10px rgba(27,27,27,.08);
+  --shadow-soft:  0 2px 16px rgba(94,107,72,.10);
+  --shadow-lift:  0 12px 32px -14px rgba(27,27,27,.18);
+  --shadow-glow:  0 6px 18px -8px rgba(236,195,74,.55);
+  --shadow-sunset:0 14px 32px -12px rgba(252,103,8,.55);
+
+  /* ===== Radius ===== */
+  --r-xs:  6px;
+  --r-sm:  10px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-2xl: 36px;
+  --r-pill: 999px;
+
+  /* ===== Space (8pt base, two half-stops) ===== */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-7:  32px;
+  --s-8:  40px;
+  --s-9:  56px;
+  --s-10: 72px;
+
+  /* ===== Type families ===== */
+  --font-display: "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-body:    "Fredoka", "Nunito", system-ui, sans-serif;
+  --font-rounded: "M PLUS Rounded 1c", "Fredoka", system-ui, sans-serif;
+  --font-jp:      "Noto Sans JP", "M PLUS Rounded 1c", system-ui, sans-serif;
+  --font-serif:   "Instrument Serif", "Times New Roman", Georgia, serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+
+  /* ===== Semantic typography (mobile app) ===== */
+  --t-display-size: 56px;  --t-display-line: 1;    --t-display-weight: 900;  --t-display-tracking: -.035em;
+  --t-h1-size:      32px;  --t-h1-line:      1.1;  --t-h1-weight:      800;  --t-h1-tracking:      -.02em;
+  --t-h2-size:      24px;  --t-h2-line:      1.2;  --t-h2-weight:      800;  --t-h2-tracking:      -.02em;
+  --t-h3-size:      18px;  --t-h3-line:      1.25; --t-h3-weight:      700;  --t-h3-tracking:      -.01em;
+  --t-body-size:    15px;  --t-body-line:    1.45; --t-body-weight:    500;
+  --t-small-size:   13px;  --t-small-line:   1.45; --t-small-weight:   500;
+  --t-eyebrow-size: 11px;  --t-eyebrow-line: 1;    --t-eyebrow-weight: 700;  --t-eyebrow-tracking: .16em;
+
+  /* ===== Mini-app type accent: poetic serif italic ===== */
+  --t-poetic-size:  34px;  --t-poetic-line:  1.15; --t-poetic-weight: 400;   --t-poetic-tracking: -.005em;
+
+  /* ===== Semantic colors ===== */
+  --fg-1: var(--ink);          /* primary text */
+  --fg-2: var(--ink-muted);    /* secondary text */
+  --fg-3: var(--ink-soft);     /* tertiary text */
+  --bg-canvas: var(--cream);   /* page bg */
+  --bg-card:   var(--paper-card);
+  --bg-soft:   var(--cream-warm);
+  --accent:    var(--sunset);  /* hot action — mic, alert, heart, time-pressure */
+  --accent-2:  var(--mustard); /* warm action — primary CTA, joy */
+  --accent-3:  var(--moss);    /* steady support — secondary, selected, success */
+}
+
+/* ============ Mini-app dark theme overrides ============ */
+.kokoro-dark {
+  --fg-1: var(--dark-text);
+  --fg-2: var(--dark-muted);
+  --fg-3: var(--dark-soft);
+  --bg-canvas: var(--dark);
+  --bg-card:   var(--dark-1);
+  --bg-soft:   var(--dark-2);
+  --hairline:        var(--dark-line);
+  --hairline-strong: var(--dark-line-2);
+}
+
+/* ============ Reset-ish ============ */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-body);
+  color: var(--fg-1);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============ Type primitives (semantic) ============ */
+.t-display    { font-family: var(--font-display); font-weight: var(--t-display-weight); font-size: var(--t-display-size); line-height: var(--t-display-line); letter-spacing: var(--t-display-tracking); }
+.t-h1         { font-family: var(--font-display); font-weight: var(--t-h1-weight);      font-size: var(--t-h1-size);      line-height: var(--t-h1-line);      letter-spacing: var(--t-h1-tracking); }
+.t-h2         { font-family: var(--font-display); font-weight: var(--t-h2-weight);      font-size: var(--t-h2-size);      line-height: var(--t-h2-line);      letter-spacing: var(--t-h2-tracking); }
+.t-h3         { font-family: var(--font-display); font-weight: var(--t-h3-weight);      font-size: var(--t-h3-size);      line-height: var(--t-h3-line);      letter-spacing: var(--t-h3-tracking); }
+.t-body       { font-family: var(--font-body);    font-weight: var(--t-body-weight);    font-size: var(--t-body-size);    line-height: var(--t-body-line); }
+.t-body-bold  { font-family: var(--font-body);    font-weight: 700;                     font-size: var(--t-body-size);    line-height: var(--t-body-line); }
+.t-small      { font-family: var(--font-body);    font-weight: var(--t-small-weight);   font-size: var(--t-small-size);   line-height: var(--t-small-line); color: var(--fg-2); }
+.t-eyebrow    { font-family: var(--font-body);    font-weight: var(--t-eyebrow-weight); font-size: var(--t-eyebrow-size); line-height: var(--t-eyebrow-line); letter-spacing: var(--t-eyebrow-tracking); text-transform: uppercase; color: var(--accent-3); }
+.t-jp         { font-family: var(--font-jp);      font-weight: 700; }
+.t-poetic     { font-family: var(--font-serif);   font-style: italic; font-weight: var(--t-poetic-weight); font-size: var(--t-poetic-size); line-height: var(--t-poetic-line); letter-spacing: var(--t-poetic-tracking); }
+.t-mono       { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
