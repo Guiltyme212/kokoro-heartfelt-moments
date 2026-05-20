@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Terms & Privacy — Kokoro</title>
+<meta name="description" content="The terms of using Kokoro, plus our privacy policy."/>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root { --cream: #FCF0DB; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body, "Fredoka", "M PLUS Rounded 1c", system-ui, sans-serif);
+    font-weight: 500;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: var(--moss-dark, #5e6b48); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--sunset); }
+  ::selection { background: var(--moss); color: var(--cream); }
+
+  .container { width: min(760px, 92vw); margin-inline: auto; }
+
+  /* ---------- top nav (matched to index) ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    padding: 14px 0;
+    background: rgba(252, 240, 219, .82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(27,27,27,.06);
+  }
+  .topnav .row { width: min(1180px, 92vw); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; text-decoration: none; color: var(--ink); }
+  .brand .glyph {
+    width: 30px; height: 30px; border-radius: 999px;
+    background: var(--mustard);
+    display: grid; place-items: center;
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900; color: var(--ink); font-size: 16px;
+    box-shadow: 0 2px 0 rgba(27,27,27,.08);
+  }
+  .brand .name { font-family: var(--font-display); font-weight: 800; letter-spacing: -.01em; font-size: 18px; }
+  .back-home {
+    font-size: 14px; color: rgba(27,27,27,.7); text-decoration: none;
+    padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(27,27,27,.12);
+    transition: background .2s, color .2s;
+  }
+  .back-home:hover { background: var(--ink); color: var(--cream); }
+
+  /* ---------- page ---------- */
+  .page { padding: 64px 0 120px; }
+
+  .eyebrow {
+    font-family: var(--font-body, "Fredoka", sans-serif);
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 14px;
+  }
+  .eyebrow .dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: var(--sunset); vertical-align: middle; margin-right: 10px; transform: translateY(-1px); }
+
+  h1.display {
+    font-family: var(--font-display, "Fredoka", sans-serif);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1;
+    color: var(--ink);
+    font-size: clamp(44px, 6vw, 72px);
+    margin: 0 0 18px;
+  }
+  h1.display .jp {
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900;
+    color: var(--sunset);
+    font-size: .7em;
+    margin-right: .12em;
+  }
+  .meta { font-size: 14px; color: rgba(27,27,27,.55); margin-bottom: 36px; }
+  .meta span + span { margin-left: 14px; padding-left: 14px; border-left: 1px solid rgba(27,27,27,.15); }
+
+  .intro { font-size: 18px; line-height: 1.6; color: #2a2a2a; }
+
+  /* privacy card */
+  .privacy-card {
+    margin: 36px 0 48px;
+    padding: 24px 26px;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid rgba(27,27,27,.06);
+    box-shadow: 0 1px 2px rgba(27,27,27,.04), 0 8px 24px -10px rgba(27,27,27,.10);
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .privacy-card .left { max-width: 460px; }
+  .privacy-card .eyebrow { color: var(--sunset); margin-bottom: 8px; }
+  .privacy-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 22px; margin: 0 0 4px; letter-spacing: -.01em; }
+  .privacy-card p { margin: 0; color: rgba(27,27,27,.65); font-size: 14.5px; }
+  .privacy-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 18px;
+    border-radius: 14px;
+    background: var(--ink);
+    color: var(--cream) !important;
+    font-weight: 600; font-size: 14.5px;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .2s;
+    box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 10px 24px -10px rgba(27,27,27,.32);
+  }
+  .privacy-btn:hover { transform: translateY(-2px); color: var(--cream) !important; box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 16px 30px -10px rgba(27,27,27,.4); }
+  .privacy-btn .arrow { font-size: 18px; line-height: 1; }
+
+  /* crisis callout */
+  .callout {
+    margin: 32px 0;
+    padding: 20px 22px;
+    background: #FFF5EC;
+    border-left: 4px solid var(--sunset);
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2a2a2a;
+  }
+  .callout strong { color: var(--ink); }
+
+  /* TOC */
+  .toc {
+    margin: 0 0 40px;
+    padding: 20px 22px;
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(27,27,27,.06);
+    border-radius: 14px;
+  }
+  .toc .label { font-family: var(--font-body); font-weight: 700; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--moss); margin-bottom: 10px; }
+  .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; font-size: 14.5px; line-height: 1.7; }
+  .toc ol a { color: rgba(27,27,27,.78); text-decoration: none; }
+  .toc ol a:hover { color: var(--sunset); }
+  @media (max-width: 620px) { .toc ol { columns: 1; } }
+
+  /* terms content */
+  .terms h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -.015em;
+    color: var(--ink);
+    margin: 56px 0 14px;
+    scroll-margin-top: 90px;
+  }
+  .terms h2 .num { color: var(--moss); margin-right: 12px; font-weight: 700; font-size: 18px; vertical-align: 2px; }
+  .terms h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    margin: 28px 0 8px;
+    color: var(--ink-1, #2a2a2a);
+  }
+  .terms p { font-size: 15.5px; line-height: 1.65; color: #2a2a2a; margin: 0 0 14px; }
+  .terms ul { padding-left: 22px; margin: 0 0 18px; }
+  .terms li { font-size: 15.5px; line-height: 1.65; color: #2a2a2a; margin-bottom: 6px; }
+  .terms hr { border: 0; border-top: 1px solid rgba(27,27,27,.08); margin: 8px 0; }
+  .terms strong { color: var(--ink); font-weight: 700; }
+
+  .contact-card {
+    margin-top: 24px;
+    padding: 22px 24px;
+    background: var(--paper, #FBF5E7);
+    border-radius: 16px;
+    border: 1px solid rgba(27,27,27,.06);
+  }
+  .contact-card .line { font-size: 15px; margin-bottom: 4px; }
+  .contact-card .name { font-weight: 700; font-family: var(--font-display); font-size: 17px; margin-bottom: 6px; }
+
+  /* footer */
+  .footer { padding: 36px 0 64px; color: rgba(27,27,27,.55); font-size: 13px; border-top: 1px solid rgba(27,27,27,.06); margin-top: 24px; }
+  .footer .row { width: min(1180px, 92vw); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
+  .footer .links { display: flex; gap: 22px; }
+  .footer .links a { color: rgba(27,27,27,.6); text-decoration: none; }
+  .footer .links a:hover { color: var(--ink); }
+  .footer .heart { color: var(--sunset); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="row">
+    <a class="brand" href="/">
+      <span class="glyph">心</span>
+      <span class="name">Kokoro</span>
+    </a>
+    <a class="back-home" href="/">← back home</a>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <div class="eyebrow"><span class="dot"></span>the small print, kept small</div>
+    <h1 class="display"><span class="jp">心</span>Terms &amp; Privacy</h1>
+    <p class="meta">
+      <span>Last updated: 21 May 2026</span>
+      <span>Effective: 21 May 2026</span>
+    </p>
+
+    <p class="intro">
+      Kokoro is a small wellness app made by a person, not a company.
+      Here's the agreement between us, written as plainly as we could. Your privacy policy lives in a separate document — link below.
+    </p>
+
+    <!-- privacy CTA -->
+    <aside class="privacy-card">
+      <div class="left">
+        <div class="eyebrow"><span class="dot" style="background:var(--mustard-dark, #c9a22f)"></span>privacy policy</div>
+        <h3>How we handle your data</h3>
+        <p>What we collect, why, how long we keep it, and your rights. Read it in full as a PDF.</p>
+      </div>
+      <a class="privacy-btn" href="/kokoro-privacy-policy.pdf" target="_blank" rel="noopener">
+        Read privacy policy <span class="arrow">↗</span>
+      </a>
+    </aside>
+
+    <div class="callout">
+      <strong>Important.</strong> Kokoro is a wellness app, not a medical, psychological, psychiatric, or crisis service.
+      It cannot replace professional care and must not be relied on in emergencies. You use Kokoro voluntarily and at your own risk,
+      and you remain solely responsible for your own decisions, actions, and wellbeing. See Section 5 for the full disclaimer.
+      <strong>If you are in crisis, contact emergency services (112 in the Netherlands) or a crisis helpline (113 in the Netherlands) immediately.</strong>
+    </div>
+
+    <p class="intro" style="font-size:15.5px; color:#3a3a3a;">
+      Welcome to Kokoro. These Terms of Service ("Terms") govern your use of the Kokoro mobile application and the website at
+      <a href="https://kokoromind.com">kokoromind.com</a> (together, the "Service"), provided by <strong>Denis Ivanov</strong>,
+      a sole trader based in the Netherlands ("Kokoro", "we", "us", or "our").
+      By downloading, installing, or using Kokoro, you agree to be bound by these Terms. If you do not agree, do not use the Service.
+      <br/><br/>
+      <strong>Contact:</strong> <a href="mailto:dan@kokoromind.com">dan@kokoromind.com</a>
+    </p>
+
+    <!-- TOC -->
+    <nav class="toc" aria-label="Table of contents">
+      <div class="label">contents</div>
+      <ol>
+        <li><a href="#s1">Eligibility</a></li>
+        <li><a href="#s2">Your Account</a></li>
+        <li><a href="#s3">License to Use the App</a></li>
+        <li><a href="#s4">Subscriptions and Payments</a></li>
+        <li><a href="#s5">Medical Disclaimer</a></li>
+        <li><a href="#s6">User Content</a></li>
+        <li><a href="#s7">AI-Generated Content</a></li>
+        <li><a href="#s8">Intellectual Property</a></li>
+        <li><a href="#s9">Third-Party Services</a></li>
+        <li><a href="#s10">Disclaimers</a></li>
+        <li><a href="#s11">Limitation of Liability</a></li>
+        <li><a href="#s12">Termination</a></li>
+        <li><a href="#s13">Changes to These Terms</a></li>
+        <li><a href="#s14">Governing Law</a></li>
+        <li><a href="#s15">Apple-Specific Terms</a></li>
+        <li><a href="#s16">Severability</a></li>
+        <li><a href="#s17">Contact</a></li>
+      </ol>
+    </nav>
+
+    <section class="terms">
+
+      <h2 id="s1"><span class="num">01</span>Eligibility</h2>
+      <p>You must be at least 16 years old to use Kokoro. By using the Service, you represent that you meet this requirement and that you have the legal capacity to enter into these Terms.</p>
+
+      <h2 id="s2"><span class="num">02</span>Your Account</h2>
+      <p>To access certain features, you may need to create an account. You agree to:</p>
+      <ul>
+        <li>Provide accurate and current information</li>
+        <li>Keep your login credentials secure</li>
+        <li>Be responsible for all activity on your account</li>
+        <li>Notify us promptly of any unauthorized use</li>
+      </ul>
+      <p>You may delete your account at any time from within the App (Settings → Account → Delete Account). We may suspend or terminate accounts that violate these Terms.</p>
+
+      <h2 id="s3"><span class="num">03</span>License to Use the App</h2>
+      <p>We grant you a personal, limited, non-exclusive, non-transferable, revocable license to download, install, and use Kokoro on devices you own or control, solely for your personal, non-commercial use, subject to these Terms and the Apple App Store's standard End User License Agreement.</p>
+      <p>You may not:</p>
+      <ul>
+        <li>Copy, modify, reverse engineer, decompile, or disassemble the App, except as permitted by mandatory law</li>
+        <li>Resell, rent, lease, sublicense, or distribute the App</li>
+        <li>Use the App for any unlawful purpose</li>
+        <li>Interfere with or disrupt the Service or attempt to gain unauthorized access to it</li>
+        <li>Use automated systems (bots, scrapers) to access the Service</li>
+      </ul>
+
+      <h2 id="s4"><span class="num">04</span>Subscriptions and Payments</h2>
+      <h3>4.1 Free and Paid Features</h3>
+      <p>Kokoro offers a freemium model. Some content and features are available free of charge. Other features require an active paid subscription.</p>
+      <h3>4.2 Auto-Renewing Subscriptions</h3>
+      <p>Paid subscriptions to Kokoro are billed through your Apple ID account on an <strong>auto-renewing basis</strong>.</p>
+      <ul>
+        <li><strong>Payment</strong> will be charged to your Apple ID account at confirmation of purchase.</li>
+        <li><strong>Subscription automatically renews</strong> unless auto-renew is turned off at least 24 hours before the end of the current period.</li>
+        <li><strong>Your account will be charged for renewal</strong> within 24 hours prior to the end of the current period, at the price of the selected plan.</li>
+        <li><strong>You can manage subscriptions and turn off auto-renewal</strong> at any time in your Apple ID Account Settings (Settings → [your name] → Subscriptions on iOS).</li>
+        <li><strong>No cancellation of the current subscription is allowed during the active subscription period</strong>, except as required by applicable law.</li>
+        <li><strong>Any unused portion of a free trial period</strong>, if offered, will be forfeited when you purchase a subscription where applicable.</li>
+      </ul>
+      <p>Current subscription prices, billing periods, and feature inclusions are displayed within the App before purchase.</p>
+      <h3>4.3 Refunds</h3>
+      <p>Refunds are handled by Apple in accordance with the App Store Terms of Service. To request a refund, visit <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>. We do not directly process refunds for App Store purchases.</p>
+      <h3>4.4 EU Right of Withdrawal</h3>
+      <p>If you are an EU consumer, you have a 14-day right of withdrawal under EU consumer law. However, by starting to use the digital content provided through a subscription, you expressly consent to immediate performance and acknowledge that you lose your right of withdrawal once delivery of the digital content has begun.</p>
+      <h3>4.5 Price Changes</h3>
+      <p>We may change subscription prices. Where required by law, we will notify you in advance and obtain your consent before any increased price applies to your renewal.</p>
+
+      <h2 id="s5"><span class="num">05</span>Medical Disclaimer and User Responsibility</h2>
+      <h3>5.1 Not a Medical or Mental Health Service</h3>
+      <p><strong>Kokoro is a general wellness and meditation app. It is not a medical device, a healthcare service, a therapy service, a counseling service, or a crisis intervention service. It does not provide, and must not be relied on as, medical advice, psychological advice, psychiatric advice, diagnosis, or treatment of any kind.</strong></p>
+      <p>The content provided through the Service — including guided meditations, breathing exercises, audio sessions, conversational responses from in-app characters, and any AI-generated content — is for general informational and wellness purposes only.</p>
+      <h3>5.2 No Substitute for Professional Care</h3>
+      <p>Kokoro is not a substitute for professional medical, psychological, psychiatric, or other qualified health care. If you have or suspect you may have a physical or mental health condition, you must consult a qualified healthcare professional. Do not delay seeking professional advice, disregard professional advice, or discontinue prescribed treatment because of anything you read, hear, or experience through Kokoro.</p>
+      <h3>5.3 Crisis Situations</h3>
+      <p><strong>Kokoro is not designed for, and must not be used in, mental health emergencies or crisis situations.</strong> If you are experiencing a mental health crisis, having thoughts of self-harm or suicide, or are in any form of emergency:</p>
+      <ul>
+        <li><strong>Contact emergency services immediately.</strong> In the Netherlands: 112 (general emergencies) or 113 / 0800-0113 (Suicide Prevention).</li>
+        <li><strong>Reach out to a qualified mental health professional, trusted person, or local crisis service in your country.</strong></li>
+      </ul>
+      <p>Although Kokoro may attempt to recognize signs of distress and direct you to professional resources, it cannot reliably detect emergencies and must never be relied upon as a crisis response system.</p>
+      <h3>5.4 Your Responsibility</h3>
+      <p>You are solely responsible for your own decisions, actions, and wellbeing. By using Kokoro, you acknowledge and agree that:</p>
+      <ul>
+        <li>You use the Service voluntarily and at your own risk</li>
+        <li>You are responsible for evaluating whether any content or practice is suitable for you, given your physical and mental condition</li>
+        <li>You are responsible for seeking appropriate professional help when needed</li>
+        <li>You will not rely on Kokoro as a source of medical, psychological, or emergency support</li>
+        <li>Any choice you make in response to, during, or after using the Service is your own choice and your own responsibility</li>
+      </ul>
+      <h3>5.5 Suitability</h3>
+      <p>Certain practices in Kokoro (including breathwork, body-focused exercises, and meditation involving introspection) may not be suitable for everyone, including people with certain medical or mental health conditions such as severe anxiety, PTSD, psychosis, dissociative disorders, epilepsy, cardiovascular conditions, or pregnancy-related concerns. If you are unsure whether use of the Service is appropriate for you, consult a qualified healthcare professional before using it.</p>
+      <h3>5.6 No Liability for Personal Decisions</h3>
+      <p>To the maximum extent permitted by applicable law, we accept no responsibility or liability for any decisions, actions, or omissions you or any other person makes based on, in connection with, or in response to the Service, including the use or interpretation of any content, suggestion, response, or interaction generated by the Service or its AI-driven features. Statutory rights of consumers and limits on liability waivers under mandatory law (including the Dutch Civil Code and EU consumer law) are not affected by this clause.</p>
+
+      <h2 id="s6"><span class="num">06</span>User Content</h2>
+      <p>If you create notes, mood logs, or other content within the App, you retain all rights to that content. You grant us a limited license to store and process this content solely to provide the Service to you. We do not claim ownership of your content and do not use it to train AI models.</p>
+
+      <h2 id="s7"><span class="num">07</span>AI-Generated Content</h2>
+      <p>Some audio content in the App is generated using AI voice synthesis technology (currently provided by ElevenLabs). AI-generated content may occasionally contain inaccuracies or imperfections. We do not guarantee that AI-generated content is error-free or suitable for any particular purpose beyond general wellness use.</p>
+
+      <h2 id="s8"><span class="num">08</span>Intellectual Property</h2>
+      <p>All content provided through the Service — including text, audio, graphics, logos, and software — is the property of Kokoro or its licensors and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works from any content without our prior written permission.</p>
+      <p>"Kokoro" and any associated logos are trademarks of Denis Ivanov.</p>
+
+      <h2 id="s9"><span class="num">09</span>Third-Party Services</h2>
+      <p>The Service integrates with third-party services including Apple (App Store, Sign in with Apple, HealthKit), Capgo (app updates), and ElevenLabs (AI voice). Your use of these services is also subject to their own terms and privacy policies. We are not responsible for third-party services.</p>
+
+      <h2 id="s10"><span class="num">10</span>Disclaimers</h2>
+      <p>To the maximum extent permitted by applicable law:</p>
+      <p>The Service is provided <strong>"as is" and "as available"</strong>, without warranties of any kind, whether express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement. We do not warrant that the Service will be uninterrupted, error-free, secure, or that defects will be corrected.</p>
+      <p>Nothing in these Terms excludes or limits our liability for matters that cannot be excluded or limited under applicable law (such as liability for death or personal injury caused by negligence, fraud, or gross misconduct).</p>
+
+      <h2 id="s11"><span class="num">11</span>Limitation of Liability</h2>
+      <p>To the maximum extent permitted by applicable law, our total aggregate liability arising out of or related to the Service shall not exceed the greater of (a) the amount you paid us in the 12 months preceding the event giving rise to liability, or (b) €50.</p>
+      <p>We shall not be liable for indirect, incidental, special, consequential, or punitive damages, including lost profits, lost data, loss of goodwill, emotional distress, or any harm arising from your reliance on content provided through the Service or from decisions you make in connection with the Service.</p>
+      <p>This limitation applies in addition to, and not in place of, the disclaimers and allocations of responsibility set out in Section 5 (Medical Disclaimer and User Responsibility).</p>
+      <p>Statutory rights of consumers under mandatory law (including the Dutch Civil Code and EU consumer law) are not affected. Nothing in these Terms limits our liability for death or personal injury caused by our negligence, for fraud, or for any other liability that cannot be limited or excluded under applicable law.</p>
+
+      <h2 id="s12"><span class="num">12</span>Termination</h2>
+      <p>We may suspend or terminate your access to the Service at any time, with or without notice, if you violate these Terms or if we reasonably believe termination is necessary to protect the Service or other users.</p>
+      <p>You may stop using the Service at any time by deleting your account and uninstalling the App. Termination does not entitle you to a refund of any prepaid fees, except as required by law.</p>
+
+      <h2 id="s13"><span class="num">13</span>Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. When we make material changes, we will notify you within the App or by email and update the "Last updated" date. Continued use of the Service after changes take effect constitutes acceptance. If you do not agree to changes, you must stop using the Service.</p>
+
+      <h2 id="s14"><span class="num">14</span>Governing Law and Jurisdiction</h2>
+      <p>These Terms are governed by the laws of the Netherlands, without regard to conflict of law principles. Any dispute arising out of these Terms shall be subject to the exclusive jurisdiction of the competent courts of the Netherlands, unless mandatory consumer protection law in your country of residence grants you the right to bring proceedings in your local courts.</p>
+      <p>EU consumers may also access the European Commission's Online Dispute Resolution platform at <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.</p>
+
+      <h2 id="s15"><span class="num">15</span>Apple-Specific Terms</h2>
+      <p>You acknowledge that these Terms are between you and Kokoro only, not with Apple Inc. Apple is not responsible for the App or its content. To the extent these Terms conflict with the Apple Media Services Terms, the Apple Media Services Terms apply with respect to your use of the App from the App Store.</p>
+      <p>Apple and its subsidiaries are third-party beneficiaries of these Terms and have the right to enforce them against you.</p>
+
+      <h2 id="s16"><span class="num">16</span>Severability</h2>
+      <p>If any provision of these Terms is held to be invalid or unenforceable, the remaining provisions remain in full force and effect.</p>
+
+      <h2 id="s17"><span class="num">17</span>Contact</h2>
+      <div class="contact-card">
+        <div class="name">Denis Ivanov</div>
+        <div class="line">Operator of Kokoro</div>
+        <div class="line">Email: <a href="mailto:dan@kokoromind.com">dan@kokoromind.com</a></div>
+        <div class="line">Website: <a href="https://kokoromind.com">https://kokoromind.com</a></div>
+      </div>
+
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="row">
+    <div>
+      <a class="brand" href="/" style="text-decoration:none;">
+        <span class="glyph">心</span>
+        <span class="name">Kokoro</span>
+      </a>
+    </div>
+    <div class="links">
+      <a href="/kokoro-privacy-policy.pdf" target="_blank" rel="noopener">privacy</a>
+      <a href="/terms.html">terms</a>
+      <a href="mailto:dan@kokoromind.com">say hi</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
