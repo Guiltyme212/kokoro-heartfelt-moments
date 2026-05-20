@@ -1,2 +1,3 @@
 [run]
 dev = "npx -y http-server -p 8080 -c-1 ."
+build = "echo 'static site - no build step'"
