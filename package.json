@@ -1,0 +1,9 @@
+{
+  "name": "kokoro-landing",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "http-server -p 8080 -c-1 .",
+    "build": "echo 'static site - no build step'"
+  }
+}
