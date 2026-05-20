@@ -19,10 +19,10 @@ function Index() {
     <main className="relative">
       <Header />
       <Hero />
+      <MeetTheBear />
       <Modes />
       <HowItWorks />
       <PetName />
-      <MeetTheBear />
       <MantraStrip />
       <WhyKokoro />
       <Waitlist />
