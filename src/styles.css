@@ -58,9 +58,9 @@
   --color-cream: var(--cream);
   --color-cream-warm: var(--cream-warm);
   --color-paper: var(--paper);
-  --font-display: "Noto Sans Rounded", "Noto Sans JP", system-ui, sans-serif;
-  --font-sans: "Noto Sans Rounded", "Noto Sans JP", system-ui, sans-serif;
-  --font-jp: "Noto Sans JP", "Noto Sans Rounded", system-ui, sans-serif;
+  --font-display: "Noto Sans Rounded", "Nunito", "Noto Sans JP", system-ui, sans-serif;
+  --font-sans: "Noto Sans Rounded", "Nunito", "Noto Sans JP", system-ui, sans-serif;
+  --font-jp: "Noto Sans JP", "Nunito", system-ui, sans-serif;
 }
 
 :root {
