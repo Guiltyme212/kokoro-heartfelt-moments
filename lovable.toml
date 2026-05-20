@@ -1,2 +1,2 @@
 [run]
-dev = "npx -y serve@14 -l 8080 ."
+dev = "npx -y http-server -p 8080 -c-1 ."
