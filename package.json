@@ -4,6 +4,6 @@
   "private": true,
   "scripts": {
     "dev": "http-server -p 8080 -c-1 .",
-    "build": "echo 'static site - no build step'"
+    "build": "rm -rf dist && mkdir -p dist && cp index.html colors_and_type.css dist/ && cp -R assets dist/assets"
   }
 }
