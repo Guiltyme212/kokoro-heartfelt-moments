@@ -194,13 +194,14 @@
 }
 .breathe { animation: breathe 6s ease-in-out infinite; transform-origin: center; }
 
-/* 600ms fade-in on scroll */
+/* 600ms fade-in on scroll — content stays visible by default so SSR and
+   screenshots never see a blank band. JS adds .reveal-hide synchronously
+   on mount so the IO can then animate to .is-visible. */
 .reveal {
-  opacity: 0;
-  transform: translateY(12px);
   transition: opacity 600ms ease-out, transform 600ms ease-out;
   will-change: opacity, transform;
 }
+.reveal.reveal-hide { opacity: 0; transform: translateY(12px); }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {

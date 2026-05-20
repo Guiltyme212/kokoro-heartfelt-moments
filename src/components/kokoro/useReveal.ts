@@ -7,11 +7,14 @@ export function useReveal<T extends HTMLElement>() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    el.classList.add("reveal-hide");
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
-            (e.target as HTMLElement).classList.add("is-visible");
+            const t = e.target as HTMLElement;
+            t.classList.remove("reveal-hide");
+            t.classList.add("is-visible");
             io.unobserve(e.target);
           }
         }
@@ -19,9 +22,10 @@ export function useReveal<T extends HTMLElement>() {
       { threshold: 0.05, rootMargin: "0px 0px 400px 0px" },
     );
     io.observe(el);
-    // Fallback: ensure content shows even if observer never fires
-    // (covers full-page screenshots, prerender, etc.).
-    const t = window.setTimeout(() => el.classList.add("is-visible"), 500);
+    const t = window.setTimeout(() => {
+      el.classList.remove("reveal-hide");
+      el.classList.add("is-visible");
+    }, 800);
     return () => {
       window.clearTimeout(t);
       io.disconnect();
