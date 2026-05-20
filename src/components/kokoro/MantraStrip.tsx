@@ -9,8 +9,8 @@ const MANTRAS = [
 export function MantraStrip() {
   return (
     <section
-      className="px-5 py-10"
-      style={{ backgroundColor: "var(--moss)", color: "var(--cream)" }}
+      className="px-5 py-8"
+      style={{ backgroundColor: "var(--moss-deep)", color: "var(--cream)" }}
     >
       <ul className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm sm:text-base">
         {MANTRAS.map((m, i) => (
