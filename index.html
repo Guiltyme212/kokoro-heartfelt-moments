@@ -91,6 +91,44 @@
     overflow: hidden;
     min-height: 720px;
   }
+  @media (max-width: 720px) {
+    .hero { padding: 28px 0 40px; min-height: 0; }
+    .hero h1 { font-size: clamp(38px, 9.2vw, 52px) !important; margin: 10px 0 16px !important; }
+    .hero .lede { font-size: 16px; line-height: 1.5; }
+    .hero-meta { flex-wrap: wrap; gap: 8px; font-size: 12.5px; }
+    .cta-row { gap: 10px; margin-top: 22px; }
+    .store-btn { padding: 11px 16px; }
+    .store-btn .lbl span { font-size: 15.5px; }
+    .hero-mascot-anchor { display: none; }
+    .peek-wrap--right {
+      position: relative !important;
+      right: auto !important; left: 50% !important; bottom: auto !important; top: auto !important;
+      transform: translateX(-50%) !important;
+      width: 84vw !important; height: 84vw !important; max-width: 400px !important; max-height: 400px !important;
+      margin: 14px auto 4px !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 58%, transparent 88%) !important;
+              mask-image: radial-gradient(circle at 50% 52%, #000 58%, transparent 88%) !important;
+    }
+    .sun { right: -40px !important; top: -80px !important; width: 240px !important; height: 240px !important; }
+    .sakura-tr { width: 180px !important; }
+    .bonsai-floor { display: none; }
+    /* tighten big sections */
+    .ritual { padding: 56px 0 32px; }
+    .friends { padding: 56px 0 32px; }
+    .promise { padding: 32px 0 48px; }
+    .download { padding: 64px 0 56px; }
+    .section-head h2 { font-size: clamp(30px, 8.2vw, 44px); }
+    .step { padding: 22px 20px 20px; }
+    .step h3 { font-size: 22px; }
+    .friend { min-height: auto; padding: 24px 22px 22px; }
+    .friend-name { font-size: 26px; }
+    .friend-line { font-size: 17px; }
+    .download-card h2 { font-size: clamp(34px, 9vw, 48px) !important; }
+    .download-mascot { max-width: 280px !important; }
+    .promise-box { padding: 40px 24px; }
+    .promise-box .ornament-sakura { width: 220px; left: -60px; top: -30px; }
+    .promise-box .ornament-lantern { width: 140px; right: -10px; bottom: -20px; }
+  }
   .hero-grid {
     display: grid;
     grid-template-columns: 1.1fr .9fr;
