@@ -112,11 +112,9 @@
       margin: 0 !important;
       z-index: 2 !important;
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
+        radial-gradient(ellipse 56% 66% at 72% 50%, #000 58%, rgba(0,0,0,.82) 70%, transparent 88%) !important;
               mask-image:
-        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
+        radial-gradient(ellipse 56% 66% at 72% 50%, #000 58%, rgba(0,0,0,.82) 70%, transparent 88%) !important;
       -webkit-mask-composite: source-in !important;
               mask-composite: intersect !important;
     }
@@ -352,7 +350,7 @@
   .scrollcue .line { width: 1px; height: 36px; background: linear-gradient(180deg, rgba(27,27,27,.35), transparent); }
 
   /* ---------- ritual section ---------- */
-  .ritual { padding: 88px 0 64px; position: relative; }
+  .ritual { padding: 24px 0 64px; position: relative; }
   .section-head { display: flex; flex-direction: column; gap: 12px; max-width: 780px; }
   .section-head h2 { font-size: clamp(36px, 4.8vw, 64px); margin: 0; }
   .section-head h2 em { font-style: normal; color: var(--moss-dark, #5e6b48); }
