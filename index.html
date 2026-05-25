@@ -87,9 +87,9 @@
   /* ---------- hero ---------- */
   .hero {
     position: relative;
-    padding: 96px 0 72px;
+    padding: 96px 0 24px;
     overflow: hidden;
-    min-height: 720px;
+    min-height: 0;
   }
   @media (max-width: 720px) {
     .hero { padding: 28px 0 4px; min-height: 0; }
@@ -110,7 +110,9 @@
       transform: none !important;
       width: 58vw !important; height: 58vw !important; max-width: 320px !important; max-height: 320px !important;
       margin: 0 !important;
-      z-index: 1 !important;
+      z-index: 2 !important;
+      background: var(--cream);
+      isolation: isolate;
       -webkit-mask-image:
         linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
@@ -127,11 +129,11 @@
     .hero-copy .cta-row,
     .hero-copy .hero-meta { max-width: 100%; clear: right; }
     /* center the sun at the top-left corner of the peeking kokoro video */
-    .sun { right: auto !important; left: calc(50vw - 180px) !important; top: -40px !important; width: 360px !important; height: 360px !important; }
+    .sun { right: auto !important; left: calc(50vw - 180px) !important; top: -40px !important; width: 360px !important; height: 360px !important; z-index: 0 !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
-    .ritual { padding: 8px 0 32px; }
+    .ritual { padding: 0 0 32px; margin-top: -72px; }
     .friends { padding: 56px 0 32px; }
     .promise { padding: 32px 0 48px; }
     .download { padding: 64px 0 56px; }
