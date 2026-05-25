@@ -103,9 +103,9 @@
     .store-btn .lbl span { font-size: 14px; }
     .store-btn .lbl small { font-size: 9.5px; }
     .hero-mascot-anchor { display: none; }
-    .hero-grid { display: block !important; padding-top: 220px; }
+    .hero-grid { display: block !important; padding-top: 0; }
     /* hero copy back to normal stacked layout; only the lede gets a white card */
-    .hero-copy { position: relative; z-index: 5; }
+    .hero-copy { position: relative; z-index: 5; max-width: 62%; }
     .hero-copy .lede {
       background: #fff;
       border-radius: 14px;
@@ -113,26 +113,28 @@
       box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 14px 32px -16px rgba(27,27,27,.22);
       font-size: 12.5px;
       margin-top: 10px;
+      max-width: 100%;
     }
-    /* kokoro centered above, like before */
+    .hero-copy .cta-row, .hero-copy .hero-meta { max-width: 100%; }
+    /* kokoro peeking from the right edge with a soft circular mask */
     .peek-wrap--right {
       position: absolute !important;
-      left: 50% !important; top: 30px !important; right: auto !important; bottom: auto !important;
-      transform: translateX(-50%) !important;
-      width: 240px !important; height: 240px !important; max-width: 240px !important; max-height: 240px !important;
+      right: -40px !important; top: 40px !important; left: auto !important; bottom: auto !important;
+      transform: none !important;
+      width: 220px !important; height: 220px !important; max-width: 220px !important; max-height: 220px !important;
       margin: 0 !important;
-      z-index: 2 !important;
+      z-index: 1 !important;
       overflow: hidden !important;
       -webkit-mask-image: none !important;
               mask-image: none !important;
     }
     .peek-wrap--right video, .peek-wrap--right img {
       mix-blend-mode: normal !important;
-      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
-              mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 45%, transparent 68%) !important;
+              mask-image: radial-gradient(circle at 50% 50%, #000 45%, transparent 68%) !important;
     }
-    /* sun hidden on mobile — kokoro takes center stage above the card */
-    .sun { display: none !important; }
+    /* sun back behind kokoro, top-right */
+    .sun { display: block !important; width: 240px !important; height: 240px !important; right: -60px !important; left: auto !important; top: -40px !important; z-index: 0 !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
