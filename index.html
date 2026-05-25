@@ -135,12 +135,14 @@
       width: 240px !important; height: 240px !important; max-width: 240px !important; max-height: 240px !important;
       margin: 0 !important;
       z-index: 6 !important;
-      -webkit-mask-image:
-        radial-gradient(circle at 50% 50%, #000 38%, transparent 62%) !important;
-              mask-image:
-        radial-gradient(circle at 50% 50%, #000 38%, transparent 62%) !important;
-      -webkit-mask-composite: source-over !important;
-              mask-composite: add !important;
+      overflow: hidden !important;
+      -webkit-mask-image: none !important;
+              mask-image: none !important;
+    }
+    .peek-wrap--right video, .peek-wrap--right img {
+      mix-blend-mode: normal !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
+              mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
     }
     /* sun hidden on mobile — kokoro takes center stage above the card */
     .sun { display: none !important; }
