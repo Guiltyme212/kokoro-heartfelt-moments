@@ -1,26 +1,27 @@
-All edits are in `index.html` (plus one asset copy).
+## Goal
+On mobile (≤720px), restore the hero exactly as it is on the published site for:
+- The eyebrow ("NOW IN TESTFLIGHT · IOS")
+- The headline ("Tell me what you're carrying. I'll listen, support and help you to proceed.")
+- The sun
+- The Kokoro video (peeking from right)
 
-## 1. Revert mobile sun + masking changes
-In the `@media (max-width: 720px)` block:
-- `.sun` → back to `width: 240px; height: 240px; left: calc(50vw - 120px); top: -20px;` (pre-50%-bigger position) and drop the `z-index: 1` override.
-- `.peek-wrap--right` → drop the `z-index: 2` override and revert the tightened mask back to `linear-gradient(to right, transparent 0%, #000 12%, #000 100%), linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%)`.
-- Remove the mobile-only `.peek-wrap--right video, .peek-wrap--right img { mix-blend-mode: normal; }` rule so the video goes back to `multiply` (matches desktop logic that was working before).
+Keep the new structure for:
+- The lede paragraph ("Spill the day to Kokoro…")
+- The App Store + TestFlight buttons
+- Both inside the white `.hero-card`
 
-## 2. Trim leftover mobile gaps
-In the `@media (max-width: 720px)` block:
-- `.friends { padding: 56px 0 32px; }` → `padding: 20px 0 32px;` (gap before "HIS FRIENDS · THE VOICES").
-- `.promise { padding: 32px 0 48px; }` → `padding: 16px 0 28px;` (gap visible in pic 3).
-- `.download { padding: 64px 0 56px; }` → `padding: 24px 0 48px;` (gap before "READY WHEN YOU ARE").
+## Changes (all in `index.html`, inside `@media (max-width: 720px)`)
 
-## 3. TestFlight icon swap
-- Copy `user-uploads://testflight-logotic.png` → `public/testflight-icon.png`.
-- Replace the inline TestFlight SVG in both `<a class="store-btn tf">` blocks (hero + download section) with:
-  ```html
-  <img src="/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
-  ```
-
-## 4. Footer cities
-- `made with a ♥ in kyoto · tokyo · brooklyn` → `made with a ♥ in kyoto · osaka · amsterdam · barcelona`.
+1. Headline — restore published size:
+   - `.hero h1` font-size from `clamp(24px, 6.4vw, 34px)` → `clamp(28px, 7.2vw, 40px)`
+   - margin from `6px 0 10px` → `8px 0 12px`
+2. Eyebrow + headline wrap width: confirm `.hero-copy .eyebrow, .hero-copy h1 { max-width: 60% }` (already in place after last edit).
+3. Kokoro video (`.peek-wrap--right`): keep current values — already match published (`right: -8vw; top: 56px; width: 58vw; max 320px; z-index: 1`, 14%/10%-88% mask). No change needed.
+4. Sun (`.sun`): keep current values — already match published (`left: calc(50vw - 120px); top: -64px; 240×240; z-index: 0`). No change needed.
+5. White card stays as-is: `.hero-card` wraps `.lede` + `.cta-row` with white bg, rounded, full-width buttons stacked. No change.
 
 ## Verification
-Screenshot mobile (390×844) after edits to confirm: sun back to original size/spot, no square video artifact, gaps tightened above Friends / Promise / Download, new TestFlight icon renders, footer reads the new city list.
+- Open preview at 390×844, screenshot, compare to the user's "published" reference image (image-18). Confirm headline size matches and card + buttons remain.
+- Spot-check 414×896 to make sure nothing breaks.
+
+No other sections, no desktop/iPad changes.
