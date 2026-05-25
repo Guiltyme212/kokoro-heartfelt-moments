@@ -93,28 +93,40 @@
   }
   @media (max-width: 720px) {
     .hero { padding: 28px 0 40px; min-height: 0; }
-    .hero h1 { font-size: clamp(38px, 9.2vw, 52px) !important; margin: 10px 0 16px !important; }
-    .hero .lede { font-size: 16px; line-height: 1.5; }
+    .hero h1 { font-size: clamp(28px, 7.2vw, 40px) !important; margin: 8px 0 12px !important; line-height: 1.08 !important; letter-spacing: -.02em; }
+    .hero h1 br { display: none; }
+    .hero h1 .jp { font-size: .8em; }
+    .hero .lede { font-size: 14.5px; line-height: 1.5; margin-top: 0; }
     .hero-meta { flex-wrap: wrap; gap: 8px; font-size: 12.5px; }
     .cta-row { gap: 10px; margin-top: 22px; }
     .store-btn { padding: 11px 16px; }
     .store-btn .lbl span { font-size: 15.5px; }
     .hero-mascot-anchor { display: none; }
+    /* keep hero a single column, but float the video to the top-right so text wraps beside it */
+    .hero-grid { display: block !important; }
+    .hero-copy { padding-top: 4px; }
     .peek-wrap--right {
-      position: relative !important;
-      right: auto !important; left: 50% !important; bottom: auto !important; top: auto !important;
-      transform: translateX(-50%) !important;
-      width: 84vw !important; height: 84vw !important; max-width: 400px !important; max-height: 400px !important;
-      margin: 14px auto 4px !important;
+      position: absolute !important;
+      right: -8vw !important; top: 56px !important; left: auto !important; bottom: auto !important;
+      transform: none !important;
+      width: 58vw !important; height: 58vw !important; max-width: 320px !important; max-height: 320px !important;
+      margin: 0 !important;
+      z-index: 1 !important;
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
+        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
               mask-image:
-        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
+        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
       -webkit-mask-composite: source-in !important;
               mask-composite: intersect !important;
     }
+    /* shape-outside so the headline + lede wrap around the peeking mascot */
+    .hero-copy .eyebrow,
+    .hero-copy h1,
+    .hero-copy .lede { max-width: 60%; }
+    .hero-copy .cta-row,
+    .hero-copy .hero-meta { max-width: 100%; clear: right; }
     .sun { right: -40px !important; top: -80px !important; width: 240px !important; height: 240px !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
