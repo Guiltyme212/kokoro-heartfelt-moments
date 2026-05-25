@@ -131,20 +131,20 @@
     }
     .hero-copy .hero-card .cta-row { margin-top: 0 !important; }
     .hero-copy .hero-meta { max-width: 100%; clear: right; }
-    /* kokoro peeking from the right edge — exact published values */
+    /* Kokoro peeking from the right edge — restored two-axis welcome-screen mask */
     .peek-wrap--right {
       position: absolute !important;
       right: -8vw !important; top: 56px !important; left: auto !important; bottom: auto !important;
       transform: none !important;
       width: 58vw !important; height: 58vw !important; max-width: 320px !important; max-height: 320px !important;
       margin: 0 !important;
-      z-index: 1 !important;
+      z-index: 3 !important;
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
+        linear-gradient(to right, transparent 0%, #000 38%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%) !important;
               mask-image:
-        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
+        linear-gradient(to right, transparent 0%, #000 38%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%) !important;
       -webkit-mask-composite: source-in !important;
               mask-composite: intersect !important;
     }
@@ -154,8 +154,8 @@
       -webkit-mask-image: none !important;
               mask-image: none !important;
     }
-    /* sun centered at the top-left corner of the peeking kokoro — published values */
-    .sun { display: block !important; right: auto !important; left: calc(50vw - 120px) !important; top: -64px !important; width: 240px !important; height: 240px !important; z-index: 0 !important; }
+    /* sun stays above Kokoro so multiply blending paints them into one scene */
+    .sun { display: block !important; right: auto !important; left: calc(50vw - 120px) !important; top: -64px !important; width: 240px !important; height: 240px !important; z-index: 6 !important; mix-blend-mode: multiply !important; opacity: .95 !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
@@ -851,9 +851,7 @@
 
     <!-- mascot anchored to the page right edge — peek-wrap technique from welcome screen -->
     <div class="peek-wrap peek-wrap--right" id="peek-wrap-welcome">
-      <video autoplay loop muted playsinline poster="assets/kokoro-peak.png">
-        <source src="assets/kokoro-peek-talk.mp4" type="video/mp4"/>
-      </video>
+      <video src="assets/kokoro-peek-talk.mp4" autoplay loop muted playsinline poster="assets/kokoro-peak.png"></video>
     </div>
     </div>
 
