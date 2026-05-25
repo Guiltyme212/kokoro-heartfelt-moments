@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="colors_and_type.css"/>
 <style>
   :root {
-    /* normalize the cream so it matches the baked video bg exactly */
-    --cream: #FCF0DB;
+    /* warm cream required for the multiply-blended Kokoro video and sun */
+    --cream: #EDE7D6;
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -106,8 +106,14 @@
       transform: translateX(-50%) !important;
       width: 84vw !important; height: 84vw !important; max-width: 400px !important; max-height: 400px !important;
       margin: 14px auto 4px !important;
-      -webkit-mask-image: radial-gradient(circle at 50% 52%, #000 58%, transparent 88%) !important;
-              mask-image: radial-gradient(circle at 50% 52%, #000 58%, transparent 88%) !important;
+      -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
+              mask-image:
+        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
+      -webkit-mask-composite: source-in !important;
+              mask-composite: intersect !important;
     }
     .sun { right: -40px !important; top: -80px !important; width: 240px !important; height: 240px !important; }
     .sakura-tr { width: 180px !important; }
@@ -188,7 +194,8 @@
     object-fit: cover;
     object-position: center;
     display: block;
-    /* no multiply — keep Kokoro fully opaque so sun overlay does not bleed through */
+    mix-blend-mode: multiply;
+    filter: saturate(1.08) contrast(1.08);
   }
   @media (max-width: 920px) {
     .peek-wrap--right { right: -40px; top: auto; bottom: -40px; transform: none; width: 360px; height: 360px; }
@@ -241,13 +248,14 @@
     width: 1040px; height: 1040px;
     background: url('assets/sun.png') center/contain no-repeat;
     mix-blend-mode: multiply;
-    opacity: .92;
+    opacity: .98;
+    filter: saturate(1.22) contrast(1.05);
     pointer-events: none;
     z-index: 6;
     animation: sunBreathe 9s cubic-bezier(.6,.2,.2,1) infinite;
   }
   @media (max-width: 920px) { .sun { right: -10px; top: -110px; width: 300px; height: 300px; } }
-  @keyframes sunBreathe { 0%,100% { transform: scale(1); opacity:.82 } 50% { transform: scale(1.025); opacity:.92 } }
+  @keyframes sunBreathe { 0%,100% { transform: scale(1); opacity:.94 } 50% { transform: scale(1.025); opacity:.98 } }
 
   .sakura-tr {
     position: absolute;
@@ -779,9 +787,9 @@
     </div>
 
     <!-- mascot anchored to the page right edge — peek-wrap technique from welcome screen -->
-    <div class="peek-wrap peek-wrap--right" id="hero-peek">
+    <div class="peek-wrap peek-wrap--right" id="peek-wrap-welcome">
       <video autoplay loop muted playsinline poster="assets/kokoro-peak.png">
-        <source src="assets/kokoro-peek-talk.mp4" type="video/mp4"/>
+        <source src="assets/kokoro-peak.mp4" type="video/mp4"/>
       </video>
     </div>
     </div>
@@ -1009,6 +1017,9 @@
   })();
 
   // reveals removed — now handled by pure CSS animation so they always play
+  document.querySelectorAll('.peek-wrap--right video').forEach((video) => {
+    video.playbackRate = 0.8;
+  });
 </script>
 </body>
 </html>
