@@ -93,40 +93,59 @@
   }
   @media (max-width: 720px) {
     .hero { padding: 28px 0 4px; min-height: 0; }
-    .hero h1 { font-size: clamp(28px, 7.2vw, 40px) !important; margin: 8px 0 12px !important; line-height: 1.08 !important; letter-spacing: -.02em; }
+    .hero h1 { font-size: clamp(24px, 6.4vw, 34px) !important; margin: 6px 0 10px !important; line-height: 1.08 !important; letter-spacing: -.02em; }
     .hero h1 .jp { font-size: .8em; }
-    .hero .lede { font-size: 13px; line-height: 1.5; margin-top: 0; }
-    .hero-meta { flex-wrap: wrap; gap: 8px; font-size: 12.5px; margin-top: 14px; }
-    .cta-row { gap: 10px; margin-top: 22px; }
-    .store-btn { padding: 11px 16px; }
-    .store-btn .lbl span { font-size: 15.5px; }
+    .hero .lede { font-size: 11.5px; line-height: 1.45; margin-top: 0; max-width: none !important; }
+    .hero-meta { flex-wrap: wrap; gap: 8px; font-size: 12px; margin-top: 12px; }
+    .cta-row { gap: 8px; margin-top: 14px; flex-direction: column; align-items: stretch; }
+    .store-btn { padding: 9px 12px; width: 100%; justify-content: flex-start; }
+    .store-btn .lbl span { font-size: 14px; }
+    .store-btn .lbl small { font-size: 9.5px; }
+    .store-btn.tf .tag { margin-left: auto; }
     .hero-mascot-anchor { display: none; }
-    /* keep hero a single column, but float the video to the top-right so text wraps beside it */
-    .hero-grid { display: block !important; }
-    .hero-copy { padding-top: 4px; }
+    .hero-grid { display: block !important; padding-top: 220px; }
+    /* white card containing text (left) + buttons (right). kokoro walks above it. */
+    .hero-copy {
+      position: relative;
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px 14px 14px;
+      box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 18px 40px -18px rgba(27,27,27,.25);
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      grid-template-areas:
+        "eb   eb"
+        "head cta"
+        "lede cta"
+        "meta meta";
+      column-gap: 12px;
+      row-gap: 6px;
+      z-index: 5;
+    }
+    .hero-copy .eyebrow { grid-area: eb; }
+    .hero-copy h1 { grid-area: head; max-width: none; }
+    .hero-copy .lede { grid-area: lede; }
+    .hero-copy .cta-row { grid-area: cta; align-self: center; margin-top: 0; }
+    .hero-copy .hero-meta { grid-area: meta; margin-top: 8px; }
+    /* kokoro centered above the card, walking on top of it */
     .peek-wrap--right {
       position: absolute !important;
-      right: -8vw !important; top: 56px !important; left: auto !important; bottom: auto !important;
-      transform: none !important;
-      width: 58vw !important; height: 58vw !important; max-width: 320px !important; max-height: 320px !important;
+      left: 50% !important; top: 30px !important; right: auto !important; bottom: auto !important;
+      transform: translateX(-50%) !important;
+      width: 240px !important; height: 240px !important; max-width: 240px !important; max-height: 240px !important;
       margin: 0 !important;
-      -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
-              mask-image:
-        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
-        linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
-      -webkit-mask-composite: source-in !important;
-              mask-composite: intersect !important;
+      z-index: 6 !important;
+      overflow: hidden !important;
+      -webkit-mask-image: none !important;
+              mask-image: none !important;
     }
-    /* shape-outside so the headline + lede wrap around the peeking mascot */
-    .hero-copy .eyebrow,
-    .hero-copy h1,
-    .hero-copy .lede { max-width: 60%; }
-    .hero-copy .cta-row,
-    .hero-copy .hero-meta { max-width: 100%; clear: right; }
-    /* center the sun at the top-left corner of the peeking kokoro video */
-    .sun { right: auto !important; left: calc(50vw - 120px) !important; top: -20px !important; width: 240px !important; height: 240px !important; }
+    .peek-wrap--right video, .peek-wrap--right img {
+      mix-blend-mode: normal !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
+              mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 70%) !important;
+    }
+    /* sun hidden on mobile — kokoro takes center stage above the card */
+    .sun { display: none !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
@@ -247,7 +266,8 @@
     .peek-wrap--right { right: -40px; top: auto; bottom: -40px; transform: none; width: 360px; height: 360px; }
   }
 
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: center; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; align-items: stretch; }
+  .cta-row .store-btn { flex: 1 1 0; min-width: 200px; justify-content: flex-start; }
   .store-btn {
     display: inline-flex; align-items: center; gap: 12px;
     padding: 12px 20px 12px 18px;
@@ -799,7 +819,7 @@
           </a>
           <a class="store-btn tf" href="https://testflight.apple.com/join/S1wMgVKK" target="_blank" rel="noopener" aria-label="Try the TestFlight beta">
             <span class="ico">
-              <img src="/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
+              <img src="assets/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
             </span>
             <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
             <span class="tag">EARLY</span>
@@ -977,7 +997,7 @@
             </a>
             <a class="store-btn tf" href="https://testflight.apple.com/join/S1wMgVKK" target="_blank" rel="noopener" aria-label="Try the TestFlight beta">
               <span class="ico">
-                <img src="/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
+                <img src="assets/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
               </span>
               <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
               <span class="tag">EARLY</span>
@@ -1003,7 +1023,7 @@
           <span class="glyph">心</span>
           <span class="name">Kokoro</span>
         </a>
-        <div class="small" style="margin-top:6px">made with a <span class="heart">♥</span> in kyoto · osaka · amsterdam · barcelona</div>
+        <div class="small" style="margin-top:6px">made with a <span class="heart">♥</span> in osaka · amsterdam · barcelona</div>
       </div>
       <div class="links">
         <a href="/kokoro-privacy-policy.pdf" target="_blank" rel="noopener">privacy</a>
