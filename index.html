@@ -147,6 +147,41 @@
     .promise-box .ornament-sakura { width: 220px; left: -60px; top: -30px; }
     .promise-box .ornament-lantern { width: 140px; right: -10px; bottom: -20px; }
   }
+  /* iPad / tablet hero — same layout idea as mobile: text on left, peeking kokoro floated top-right */
+  @media (min-width: 721px) and (max-width: 1024px) {
+    .hero { padding: 56px 0 64px; min-height: 0; }
+    .hero h1 { font-size: clamp(46px, 6.4vw, 64px); line-height: 1.05; letter-spacing: -.02em; margin: 10px 0 16px; }
+    .hero h1 .jp { font-size: .82em; }
+    .hero .lede { font-size: 17px; line-height: 1.55; }
+    .hero-mascot-anchor { display: none; }
+    .hero-grid { display: block !important; }
+    .hero-copy { padding-top: 8px; }
+    .hero-copy .eyebrow,
+    .hero-copy h1,
+    .hero-copy .lede { max-width: 62%; }
+    .hero-copy .cta-row,
+    .hero-copy .hero-meta { max-width: 100%; clear: right; }
+    .peek-wrap--right {
+      position: absolute !important;
+      right: -4vw !important; top: 48px !important; left: auto !important; bottom: auto !important;
+      transform: none !important;
+      width: 46vw !important; height: 46vw !important; max-width: 460px !important; max-height: 460px !important;
+      margin: 0 !important;
+      z-index: 1 !important;
+      -webkit-mask-image:
+        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 8%, #000 90%, transparent 100%) !important;
+              mask-image:
+        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
+        linear-gradient(to bottom, transparent 0%, #000 8%, #000 90%, transparent 100%) !important;
+      -webkit-mask-composite: source-in !important;
+              mask-composite: intersect !important;
+    }
+    /* sun centered at the top-left corner of the peeking kokoro video */
+    .sun { right: auto !important; left: calc(54vw - 160px) !important; top: -90px !important; width: 320px !important; height: 320px !important; }
+    .sakura-tr { width: 260px !important; right: -20px !important; top: -10px !important; }
+    .bonsai-floor { display: none; }
+  }
   .hero-grid {
     display: grid;
     grid-template-columns: 1.1fr .9fr;
