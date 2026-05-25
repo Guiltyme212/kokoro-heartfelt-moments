@@ -103,10 +103,13 @@
     .store-btn .lbl span { font-size: 16px; }
     .store-btn .lbl small { font-size: 10.5px; }
     .hero-mascot-anchor { display: none; }
+    /* same layout strategy as the published version: text on left wrapping
+       beside the peeking kokoro on the right, with the sun behind the headline.
+       The lede + CTA buttons live inside a white card BELOW the wrapping text. */
     .hero-grid { display: block !important; padding-top: 0; }
-    /* hero copy back to normal stacked layout; only the lede gets a white card */
-    .hero-copy { position: relative; z-index: 5; max-width: 100%; }
-    .hero-copy .eyebrow, .hero-copy h1 { max-width: 62%; }
+    .hero-copy { position: relative; z-index: 4; padding-top: 4px; }
+    .hero-copy .eyebrow,
+    .hero-copy h1 { max-width: 60%; }
     .hero-copy .hero-card {
       background: #fff;
       border-radius: 16px;
@@ -115,6 +118,7 @@
       margin-top: 16px;
       position: relative;
       z-index: 5;
+      clear: right;
     }
     .hero-copy .hero-card .lede {
       background: transparent !important;
@@ -126,20 +130,20 @@
       border-radius: 0 !important;
     }
     .hero-copy .hero-card .cta-row { margin-top: 0 !important; }
-    .hero-copy .hero-meta { max-width: 100%; }
-    /* kokoro peeking from the right edge with the soft linear gradient mask (original look) */
+    .hero-copy .hero-meta { max-width: 100%; clear: right; }
+    /* kokoro peeking from the right edge — exact published values */
     .peek-wrap--right {
       position: absolute !important;
-      right: -60px !important; top: 60px !important; left: auto !important; bottom: auto !important;
+      right: -8vw !important; top: 56px !important; left: auto !important; bottom: auto !important;
       transform: none !important;
-      width: 190px !important; height: 230px !important; max-width: 190px !important; max-height: 230px !important;
+      width: 58vw !important; height: 58vw !important; max-width: 320px !important; max-height: 320px !important;
       margin: 0 !important;
-      z-index: 6 !important;
+      z-index: 1 !important;
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
+        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
               mask-image:
-        linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
+        linear-gradient(to right, transparent 0%, #000 14%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
       -webkit-mask-composite: source-in !important;
               mask-composite: intersect !important;
@@ -150,8 +154,8 @@
       -webkit-mask-image: none !important;
               mask-image: none !important;
     }
-    /* sun back behind headline, large upper area (matches "best" published look) */
-    .sun { display: block !important; width: 300px !important; height: 300px !important; right: auto !important; left: calc(50vw - 110px) !important; top: -40px !important; z-index: 0 !important; }
+    /* sun centered at the top-left corner of the peeking kokoro — published values */
+    .sun { display: block !important; right: auto !important; left: calc(50vw - 120px) !important; top: -64px !important; width: 240px !important; height: 240px !important; z-index: 0 !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
