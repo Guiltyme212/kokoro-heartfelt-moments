@@ -107,10 +107,10 @@
       width: 84vw !important; height: 84vw !important; max-width: 400px !important; max-height: 400px !important;
       margin: 14px auto 4px !important;
       -webkit-mask-image:
-        linear-gradient(to right, transparent 0%, #000 18%, #000 100%),
+        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
               mask-image:
-        linear-gradient(to right, transparent 0%, #000 18%, #000 100%),
+        linear-gradient(to right, transparent 0%, #000 6%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 90%, transparent 100%) !important;
       -webkit-mask-composite: source-in !important;
               mask-composite: intersect !important;
@@ -195,6 +195,7 @@
     object-position: center;
     display: block;
     mix-blend-mode: multiply;
+    filter: saturate(1.08) contrast(1.08);
   }
   @media (max-width: 920px) {
     .peek-wrap--right { right: -40px; top: auto; bottom: -40px; transform: none; width: 360px; height: 360px; }
