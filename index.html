@@ -136,13 +136,11 @@
       margin: 0 !important;
       z-index: 6 !important;
       -webkit-mask-image:
-        linear-gradient(to right,  transparent 0%, #000 14%, #000 86%, transparent 100%),
-        linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%) !important;
+        radial-gradient(circle at 50% 50%, #000 38%, transparent 62%) !important;
               mask-image:
-        linear-gradient(to right,  transparent 0%, #000 14%, #000 86%, transparent 100%),
-        linear-gradient(to bottom, transparent 0%, #000 14%, #000 80%, transparent 100%) !important;
-      -webkit-mask-composite: source-in !important;
-              mask-composite: intersect !important;
+        radial-gradient(circle at 50% 50%, #000 38%, transparent 62%) !important;
+      -webkit-mask-composite: source-over !important;
+              mask-composite: add !important;
     }
     /* sun behind kokoro, centered above the card */
     .sun { right: auto !important; left: calc(50vw - 120px) !important; top: -20px !important; width: 240px !important; height: 240px !important; z-index: 1 !important; }
