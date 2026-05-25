@@ -188,7 +188,7 @@
     object-fit: cover;
     object-position: center;
     display: block;
-    mix-blend-mode: multiply;
+    /* no multiply — keep Kokoro fully opaque so sun overlay does not bleed through */
   }
   @media (max-width: 920px) {
     .peek-wrap--right { right: -40px; top: auto; bottom: -40px; transform: none; width: 360px; height: 360px; }
