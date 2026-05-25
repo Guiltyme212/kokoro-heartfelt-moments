@@ -107,25 +107,34 @@
     /* hero copy back to normal stacked layout; only the lede gets a white card */
     .hero-copy { position: relative; z-index: 5; max-width: 100%; }
     .hero-copy .eyebrow, .hero-copy h1 { max-width: 62%; }
-    .hero-copy .lede {
+    .hero-copy .hero-card {
       background: #fff;
-      border-radius: 14px;
-      padding: 14px 16px;
+      border-radius: 16px;
+      padding: 16px 16px 16px;
       box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 14px 32px -16px rgba(27,27,27,.22);
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 14px;
-      max-width: 100%;
+      margin-top: 16px;
+      position: relative;
+      z-index: 5;
     }
-    .hero-copy .cta-row, .hero-copy .hero-meta { max-width: 100%; }
+    .hero-copy .hero-card .lede {
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 0 14px 0 !important;
+      font-size: 13px !important;
+      line-height: 1.5 !important;
+      border-radius: 0 !important;
+    }
+    .hero-copy .hero-card .cta-row { margin-top: 0 !important; }
+    .hero-copy .hero-meta { max-width: 100%; }
     /* kokoro peeking from the right edge with the soft linear gradient mask (original look) */
     .peek-wrap--right {
       position: absolute !important;
-      right: -30px !important; top: 30px !important; left: auto !important; bottom: auto !important;
+      right: -50px !important; top: 50px !important; left: auto !important; bottom: auto !important;
       transform: none !important;
-      width: 240px !important; height: 280px !important; max-width: 240px !important; max-height: 280px !important;
+      width: 280px !important; height: 340px !important; max-width: 280px !important; max-height: 340px !important;
       margin: 0 !important;
-      z-index: 2 !important;
+      z-index: 6 !important;
       -webkit-mask-image:
         linear-gradient(to right, transparent 0%, #000 12%, #000 100%),
         linear-gradient(to bottom, transparent 0%, #000 10%, #000 88%, transparent 100%) !important;
@@ -141,8 +150,8 @@
       -webkit-mask-image: none !important;
               mask-image: none !important;
     }
-    /* sun back behind kokoro, large top-right (original "best" position) */
-    .sun { display: block !important; width: 260px !important; height: 260px !important; right: auto !important; left: calc(50vw - 80px) !important; top: -30px !important; z-index: 0 !important; }
+    /* sun back behind headline, large upper area (matches "best" published look) */
+    .sun { display: block !important; width: 300px !important; height: 300px !important; right: auto !important; left: calc(50vw - 110px) !important; top: -40px !important; z-index: 0 !important; }
     .sakura-tr { width: 180px !important; }
     .bonsai-floor { display: none; }
     /* tighten big sections */
@@ -801,6 +810,7 @@
           what you're carrying.<br/>
           <em>I'll listen, support<br/>and help you to proceed.</em>
         </h1>
+        <div class="hero-card">
         <p class="lede">
           Spill the day to Kokoro like you would to a safe friend. He listens first, then turns what you said into a solution — a short personalized meditation that will make you feel better.
         </p>
@@ -821,6 +831,7 @@
             <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
             
           </a>
+        </div>
         </div>
 
         <div class="hero-meta">
