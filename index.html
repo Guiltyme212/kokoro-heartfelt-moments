@@ -130,15 +130,15 @@
     /* kokoro centered above the card, walking on top of it */
     .peek-wrap--right {
       position: absolute !important;
-      left: 50% !important; top: 40px !important; right: auto !important; bottom: auto !important;
+      left: 50% !important; top: 30px !important; right: auto !important; bottom: auto !important;
       transform: translateX(-50%) !important;
       width: 240px !important; height: 240px !important; max-width: 240px !important; max-height: 240px !important;
       margin: 0 !important;
       z-index: 6 !important;
       -webkit-mask-image:
-        linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%) !important;
+        radial-gradient(ellipse 70% 70% at 50% 45%, #000 55%, transparent 92%) !important;
               mask-image:
-        linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%) !important;
+        radial-gradient(ellipse 70% 70% at 50% 45%, #000 55%, transparent 92%) !important;
     }
     /* sun behind kokoro, centered above the card */
     .sun { right: auto !important; left: calc(50vw - 120px) !important; top: -20px !important; width: 240px !important; height: 240px !important; z-index: 1 !important; }
