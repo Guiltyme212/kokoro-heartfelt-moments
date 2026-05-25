@@ -119,19 +119,20 @@
     /* kokoro peeking from the right edge with a soft circular mask */
     .peek-wrap--right {
       position: absolute !important;
-      right: -40px !important; top: 40px !important; left: auto !important; bottom: auto !important;
+      right: -20px !important; top: 20px !important; left: auto !important; bottom: auto !important;
       transform: none !important;
-      width: 220px !important; height: 220px !important; max-width: 220px !important; max-height: 220px !important;
+      width: 200px !important; height: 200px !important; max-width: 200px !important; max-height: 200px !important;
       margin: 0 !important;
-      z-index: 1 !important;
-      overflow: hidden !important;
+      z-index: 3 !important;
+      overflow: visible !important;
       -webkit-mask-image: none !important;
               mask-image: none !important;
     }
     .peek-wrap--right video, .peek-wrap--right img {
-      mix-blend-mode: normal !important;
-      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 45%, transparent 68%) !important;
-              mask-image: radial-gradient(circle at 50% 50%, #000 45%, transparent 68%) !important;
+      mix-blend-mode: multiply !important;
+      width: 100% !important; height: 100% !important; object-fit: cover !important;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 50%, transparent 72%) !important;
+              mask-image: radial-gradient(circle at 50% 50%, #000 50%, transparent 72%) !important;
     }
     /* sun back behind kokoro, top-right */
     .sun { display: block !important; width: 240px !important; height: 240px !important; right: -60px !important; left: auto !important; top: -40px !important; z-index: 0 !important; }
