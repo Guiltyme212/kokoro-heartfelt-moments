@@ -97,44 +97,31 @@
     .hero h1 .jp { font-size: .8em; }
     .hero .lede { font-size: 11.5px; line-height: 1.45; margin-top: 0; max-width: none !important; }
     .hero-meta { flex-wrap: wrap; gap: 8px; font-size: 12px; margin-top: 12px; }
-    .cta-row { gap: 8px; margin-top: 14px; flex-direction: column; align-items: stretch; }
-    .store-btn { padding: 9px 12px; width: 100%; justify-content: flex-start; }
+    .cta-row { gap: 10px !important; margin-top: 14px !important; flex-direction: row !important; flex-wrap: nowrap !important; align-items: stretch !important; }
+    .cta-row .store-btn { flex: 1 1 0 !important; width: auto !important; min-width: 0 !important; padding: 10px 12px !important; justify-content: center !important; }
+    .cta-row .store-btn .lbl { align-items: flex-start; }
     .store-btn .lbl span { font-size: 14px; }
     .store-btn .lbl small { font-size: 9.5px; }
-    .store-btn.tf .tag { margin-left: auto; }
     .hero-mascot-anchor { display: none; }
     .hero-grid { display: block !important; padding-top: 220px; }
-    /* white card containing text (left) + buttons (right). kokoro walks above it. */
-    .hero-copy {
-      position: relative;
+    /* hero copy back to normal stacked layout; only the lede gets a white card */
+    .hero-copy { position: relative; z-index: 5; }
+    .hero-copy .lede {
       background: #fff;
-      border-radius: 18px;
-      padding: 16px 14px 14px;
-      box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 18px 40px -18px rgba(27,27,27,.25);
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      grid-template-areas:
-        "eb   eb"
-        "head cta"
-        "lede cta"
-        "meta meta";
-      column-gap: 12px;
-      row-gap: 6px;
-      z-index: 5;
+      border-radius: 14px;
+      padding: 12px 14px;
+      box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 14px 32px -16px rgba(27,27,27,.22);
+      font-size: 12.5px;
+      margin-top: 10px;
     }
-    .hero-copy .eyebrow { grid-area: eb; }
-    .hero-copy h1 { grid-area: head; max-width: none; }
-    .hero-copy .lede { grid-area: lede; }
-    .hero-copy .cta-row { grid-area: cta; align-self: center; margin-top: 0; }
-    .hero-copy .hero-meta { grid-area: meta; margin-top: 8px; }
-    /* kokoro centered above the card, walking on top of it */
+    /* kokoro centered above, like before */
     .peek-wrap--right {
       position: absolute !important;
       left: 50% !important; top: 30px !important; right: auto !important; bottom: auto !important;
       transform: translateX(-50%) !important;
       width: 240px !important; height: 240px !important; max-width: 240px !important; max-height: 240px !important;
       margin: 0 !important;
-      z-index: 6 !important;
+      z-index: 2 !important;
       overflow: hidden !important;
       -webkit-mask-image: none !important;
               mask-image: none !important;
@@ -822,7 +809,7 @@
               <img src="assets/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
             </span>
             <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
-            <span class="tag">EARLY</span>
+            
           </a>
         </div>
 
@@ -1000,7 +987,7 @@
                 <img src="assets/testflight-icon.png" alt="" width="24" height="24" style="border-radius:6px; display:block"/>
               </span>
               <span class="lbl"><small>Join the beta</small><span>TestFlight</span></span>
-              <span class="tag">EARLY</span>
+              
             </a>
           </div>
         </div>
