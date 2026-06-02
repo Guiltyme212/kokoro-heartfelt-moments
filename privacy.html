@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Privacy Policy — Kokoro</title>
+<meta name="description" content="How Kokoro Mind collects, uses, and shares your information."/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  :root { --cream: #FCF0DB; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body, "Fredoka", "M PLUS Rounded 1c", system-ui, sans-serif);
+    font-weight: 500;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: var(--moss-dark, #5e6b48); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { color: var(--sunset); }
+  ::selection { background: var(--moss); color: var(--cream); }
+
+  .container { width: min(760px, 92vw); margin-inline: auto; }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 50;
+    padding: 14px 0;
+    background: rgba(252, 240, 219, .82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(27,27,27,.06);
+  }
+  .topnav .row { width: min(1180px, 92vw); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; text-decoration: none; color: var(--ink); }
+  .brand .glyph {
+    width: 30px; height: 30px; border-radius: 999px;
+    background: var(--mustard);
+    display: grid; place-items: center;
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900; color: var(--ink); font-size: 16px;
+    box-shadow: 0 2px 0 rgba(27,27,27,.08);
+  }
+  .brand .name { font-family: var(--font-display); font-weight: 800; letter-spacing: -.01em; font-size: 18px; }
+  .back-home {
+    font-size: 14px; color: rgba(27,27,27,.7); text-decoration: none;
+    padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(27,27,27,.12);
+    transition: background .2s, color .2s;
+  }
+  .back-home:hover { background: var(--ink); color: var(--cream); }
+
+  .page { padding: 64px 0 120px; }
+
+  .eyebrow {
+    font-family: var(--font-body, "Fredoka", sans-serif);
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 14px;
+  }
+  .eyebrow .dot { display: inline-block; width: 6px; height: 6px; border-radius: 999px; background: var(--sunset); vertical-align: middle; margin-right: 10px; transform: translateY(-1px); }
+
+  h1.display {
+    font-family: var(--font-display, "Fredoka", sans-serif);
+    font-weight: 800;
+    letter-spacing: -.025em;
+    line-height: 1;
+    color: var(--ink);
+    font-size: clamp(44px, 6vw, 72px);
+    margin: 0 0 18px;
+  }
+  h1.display .jp {
+    font-family: var(--font-jp, "Noto Sans JP", sans-serif);
+    font-weight: 900;
+    color: var(--sunset);
+    font-size: .7em;
+    margin-right: .12em;
+  }
+  .meta { font-size: 14px; color: rgba(27,27,27,.55); margin-bottom: 36px; }
+
+  .intro { font-size: 18px; line-height: 1.6; color: #2a2a2a; }
+
+  .callout {
+    margin: 32px 0;
+    padding: 20px 22px;
+    background: #FFF5EC;
+    border-left: 4px solid var(--sunset);
+    border-radius: 14px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2a2a2a;
+  }
+  .callout strong { color: var(--ink); }
+
+  .terms h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -.015em;
+    color: var(--ink);
+    margin: 56px 0 14px;
+    scroll-margin-top: 90px;
+  }
+  .terms h2 .num { color: var(--moss); margin-right: 12px; font-weight: 700; font-size: 18px; vertical-align: 2px; }
+  .terms p { font-size: 15.5px; line-height: 1.65; color: #2a2a2a; margin: 0 0 14px; }
+  .terms ul { padding-left: 22px; margin: 0 0 18px; }
+  .terms li { font-size: 15.5px; line-height: 1.65; color: #2a2a2a; margin-bottom: 8px; }
+  .terms strong { color: var(--ink); font-weight: 700; }
+
+  .contact-card {
+    margin-top: 24px;
+    padding: 22px 24px;
+    background: var(--paper, #FBF5E7);
+    border-radius: 16px;
+    border: 1px solid rgba(27,27,27,.06);
+  }
+
+  .footer { padding: 36px 0 64px; color: rgba(27,27,27,.55); font-size: 13px; border-top: 1px solid rgba(27,27,27,.06); margin-top: 24px; }
+  .footer .row { width: min(1180px, 92vw); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; align-items: center; }
+  .footer .links { display: flex; gap: 22px; }
+  .footer .links a { color: rgba(27,27,27,.6); text-decoration: none; }
+  .footer .links a:hover { color: var(--ink); }
+  .footer .heart { color: var(--sunset); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="row">
+    <a class="brand" href="/">
+      <span class="glyph">心</span>
+      <span class="name">Kokoro</span>
+    </a>
+    <a class="back-home" href="/">← back home</a>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <div class="eyebrow"><span class="dot"></span>your data, your call</div>
+    <h1 class="display"><span class="jp">心</span>Privacy Policy</h1>
+    <p class="meta">Kokoro Mind — Last updated: June 2, 2026</p>
+
+    <p class="intro">
+      This Privacy Policy explains how Kokoro Mind ("Kokoro," "we," "us") collects, uses, and shares information when you use the Kokoro Mind app. Kokoro is a meditation and wellness app that uses artificial intelligence to create personalized guided meditations from what you say or type. By using the app you agree to this Policy.
+    </p>
+
+    <div class="callout">
+      Kokoro is a wellness and relaxation app. It is <strong>not a medical device</strong> and does not provide medical advice, diagnosis, or treatment.
+    </div>
+
+    <section class="terms">
+      <h2><span class="num">1.</span>Information we collect</h2>
+      <ul>
+        <li><strong>Voice recordings &amp; microphone audio.</strong> When you choose to talk to Kokoro, we capture your microphone audio so it can be turned into a conversation and a meditation. The microphone is used only while you are in a voice session.</li>
+        <li><strong>Conversation &amp; text content.</strong> The messages you speak or type, and the meditation content generated for you, are processed to create and personalize your meditation.</li>
+        <li><strong>Profile information you provide.</strong> The name or nickname you choose and the feelings or themes you share during onboarding. This is stored locally on your device.</li>
+        <li><strong>Sign in with Apple (optional).</strong> If you choose to sign in, Apple provides your name and an email address (which may be Apple's private "Hide My Email" relay) and a unique identifier. Sign-in is optional — the app's core features work without an account. This is stored locally on your device.</li>
+        <li><strong>Technical data.</strong> Basic information needed to run the service (app version, device/OS type, language/locale, request data) may be processed to operate and secure the app.</li>
+      </ul>
+
+      <h2><span class="num">2.</span>How we use your information</h2>
+      <ul>
+        <li>To understand what you share and generate a personalized guided meditation (audio and text).</li>
+        <li>To play back and, if you choose, save your meditations.</li>
+        <li>To operate, maintain, secure, and improve the app.</li>
+        <li>To respond to your support requests and content reports.</li>
+      </ul>
+
+      <h2><span class="num">3.</span>Sharing with third-party AI and service providers</h2>
+      <p>To create your meditation, your voice audio and/or conversation text is sent securely to the following providers, which process it on our behalf. We do not sell your personal information.</p>
+      <ul>
+        <li><strong>ElevenLabs</strong> — voice audio and conversation text, for the real-time AI voice conversation (speech-to-text and the AI guide's spoken responses).</li>
+        <li><strong>OpenAI</strong> — conversation/text content (and audio for transcription), for the AI language model that writes your meditation and for voice transcription.</li>
+        <li><strong>Suno</strong> — text prompts derived from your session, for AI generation of the meditation audio.</li>
+        <li><strong>Apple</strong> — your Sign in with Apple identifier (only if you sign in), for authentication.</li>
+        <li><strong>Railway</strong> — request data in transit, for hosting our backend service.</li>
+      </ul>
+      <p>These providers process your data under their own terms and privacy policies. We ask for your explicit consent in the app before any voice or text is sent to these AI providers. Our list of providers may change over time as we improve the app.</p>
+
+      <h2><span class="num">4.</span>Where your data is stored</h2>
+      <p>Your account, profile, and saved meditations are stored locally on your device. We do not maintain a server-side user account tied to your identity. Audio and text are transmitted to the providers above to generate your meditation and are handled by them according to their policies; we do not retain your voice recordings on our servers beyond what is needed to deliver the result.</p>
+
+      <h2><span class="num">5.</span>Advertising and tracking</h2>
+      <p>We do not use your data for advertising, we do not track you across other companies' apps or websites, and we do not share your data with data brokers. The app contains no third-party advertising or cross-app tracking.</p>
+
+      <h2><span class="num">6.</span>Your choices and deleting your data</h2>
+      <ul>
+        <li><strong>Delete your account and data.</strong> In the app, go to the <strong>You</strong> tab and tap <strong>Delete account</strong>. This permanently removes your name, saved meditations, and Sign in with Apple credential from your device. Because your account is stored only on your device, this fully deletes it.</li>
+        <li><strong>Microphone.</strong> You can decline or revoke microphone access in iOS Settings and still use the text-based experience.</li>
+        <li><strong>Sign in with Apple.</strong> You can manage or stop using it in iOS Settings → your Apple ID → Sign in with Apple.</li>
+        <li><strong>Requests.</strong> To request deletion of any data we hold or ask a question, email us (see Contact). We respond within a reasonable time.</li>
+      </ul>
+
+      <h2><span class="num">7.</span>Children</h2>
+      <p>Kokoro Mind is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If you believe a child has provided us information, contact us and we will delete it.</p>
+
+      <h2><span class="num">8.</span>Security</h2>
+      <p>Data is transmitted over encrypted connections (HTTPS/TLS). No method of transmission or storage is 100% secure, but we take reasonable measures to protect your information.</p>
+
+      <h2><span class="num">9.</span>Changes to this policy</h2>
+      <p>We may update this Policy from time to time. We will update the "Last updated" date above and, where appropriate, notify you in the app.</p>
+
+      <h2><span class="num">10.</span>Contact</h2>
+      <div class="contact-card">
+        <p style="margin:0">Questions, requests, or content reports: <a href="mailto:dan@aiboostly.com">dan@aiboostly.com</a></p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="row">
+    <div>made with a <span class="heart">♥</span> in amsterdam · barcelona</div>
+    <div class="links">
+      <a href="/">home</a>
+      <a href="/terms.html">terms</a>
+      <a href="/privacy.html">privacy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
