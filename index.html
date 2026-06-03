@@ -264,6 +264,20 @@
   }
   .hero .lede { font-size: clamp(18px, 1.6vw, 21px); max-width: 46ch; }
 
+  /* Desktop hero-card — same white box as mobile, wraps lede + CTAs */
+  .hero-copy .hero-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 18px 40px -18px rgba(27,27,27,.22);
+    margin-top: 18px;
+    position: relative;
+    z-index: 5;
+    max-width: 560px;
+  }
+  .hero-copy .hero-card .lede { margin: 0 0 18px 0; max-width: none; }
+  .hero-copy .hero-card .cta-row { margin-top: 0; }
+
   /* spacer column to balance the grid where the mascot floats */
   .hero-mascot-anchor { position: relative; height: 540px; }
   @media (max-width: 920px) { .hero-mascot-anchor { height: 380px; } }
