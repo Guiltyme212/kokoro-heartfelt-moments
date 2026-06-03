@@ -242,7 +242,7 @@
   }
   @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; gap: 8px; } }
 
-  .hero-copy { position: relative; z-index: 4; }
+  .hero-copy { position: relative; z-index: 20; }
   .hero h1 {
     font-size: clamp(46px, 6.6vw, 92px);
     margin: 14px 0 22px;
@@ -261,6 +261,8 @@
     font-style: normal;
     color: #3d4a2a;
     opacity: 1;
+    position: relative;
+    z-index: 21;
   }
   .hero .lede { font-size: clamp(18px, 1.6vw, 21px); max-width: 46ch; }
 
@@ -272,10 +274,10 @@
     box-shadow: 0 2px 0 rgba(0,0,0,.04), 0 18px 40px -18px rgba(27,27,27,.22);
     margin-top: 18px;
     position: relative;
-    z-index: 5;
+    z-index: 22;
     max-width: 560px;
   }
-  .hero-copy .hero-card .lede { margin: 0 0 18px 0; max-width: none; }
+  .hero-copy .hero-card .lede { margin: 0 0 18px 0; max-width: none; color: #1b1b1b; opacity: 1; }
   .hero-copy .hero-card .cta-row { margin-top: 0; }
 
   /* spacer column to balance the grid where the mascot floats */
@@ -321,8 +323,8 @@
     display: inline-flex; align-items: center; gap: 12px;
     padding: 12px 20px 12px 18px;
     border-radius: 16px;
-    background: var(--ink);
-    color: var(--cream);
+    background: #1b1b1b;
+    color: #fff;
     transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
     box-shadow: 0 2px 0 rgba(0,0,0,.12), 0 12px 28px -10px rgba(27,27,27,.32);
   }
@@ -330,9 +332,9 @@
   .store-btn:active { transform: translateY(0); }
   .store-btn .ico { width: 26px; height: 26px; display: grid; place-items: center; }
   .store-btn .lbl { display: flex; flex-direction: column; line-height: 1; }
-  .store-btn .lbl small { font-size: 10.5px; opacity: .65; letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
-  .store-btn .lbl span { font-size: 17px; font-weight: 600; margin-top: 3px; letter-spacing: -.01em; }
-  .store-btn.tf { background: var(--sunset); color: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 14px 30px -10px rgba(252,103,8,.55); }
+  .store-btn .lbl small { font-size: 10.5px; opacity: 1; color: #fff; letter-spacing: .04em; text-transform: uppercase; font-weight: 500; }
+  .store-btn .lbl span { font-size: 17px; font-weight: 600; margin-top: 3px; letter-spacing: -.01em; color: #fff; opacity: 1; }
+  .store-btn.tf { background: #fc6708; color: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 14px 30px -10px rgba(252,103,8,.55); }
   .store-btn.tf .lbl small { opacity: 1; color: #fff; font-weight: 700; letter-spacing: .14em; }
   .store-btn.tf .lbl span { color: #fff; opacity: 1; }
   .store-btn.tf:hover { box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 20px 36px -10px rgba(252,103,8,.65); }
@@ -368,7 +370,7 @@
     opacity: .98;
     filter: saturate(1.22) contrast(1.05);
     pointer-events: none;
-    z-index: 6;
+    z-index: 2;
     animation: sunBreathe 9s cubic-bezier(.6,.2,.2,1) infinite;
   }
   @media (max-width: 920px) { .sun { right: -10px; top: -110px; width: 300px; height: 300px; } }
