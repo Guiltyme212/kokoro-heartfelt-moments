@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#FCF0DB"/>
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1688497089098770');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1688497089098770&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<title>Create your meditation — Kokoro</title>
+<meta name="description" content="Tell Kokoro what you can't say out loud. He listens, then makes a short meditation from your real problem."/>
+<meta property="og:title" content="Create your meditation — Kokoro"/>
+<meta property="og:description" content="Tell Kokoro what you can't say out loud."/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="stylesheet" href="colors_and_type.css"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; overscroll-behavior: none; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body, "Fredoka", system-ui, sans-serif);
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--moss); color: var(--cream); }
+  button { font: inherit; color: inherit; }
+
+  .stage {
+    min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #F8E3A8 0%, transparent 55%),
+      linear-gradient(180deg, #F5E6CC 0%, #ECD9B4 100%);
+  }
+  .phone {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    height: 100dvh;
+    background: var(--cream);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  @media (min-width: 480px) {
+    .phone {
+      height: min(900px, 95vh);
+      border-radius: 44px;
+      box-shadow:
+        0 1px 0 rgba(255,255,255,.6) inset,
+        0 30px 80px -20px rgba(27,27,27,.35),
+        0 10px 30px -10px rgba(27,27,27,.2);
+      border: 1px solid rgba(27,27,27,.06);
+    }
+  }
+
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: max(env(safe-area-inset-top), 18px) 0 max(env(safe-area-inset-bottom), 18px);
+    opacity: 0; pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .45s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .screen.is-active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  .progress-wrap { padding: 6px 26px 0; }
+  .progress {
+    height: 5px; width: 100%;
+    background: rgba(27,27,27,.09);
+    border-radius: 999px; overflow: hidden;
+  }
+  .progress > span {
+    display: block; height: 100%;
+    background: var(--moss);
+    border-radius: 999px;
+    transition: width .6s cubic-bezier(.2,.7,.2,1);
+  }
+
+  .content { flex: 1; display: flex; flex-direction: column; padding: 0 26px; min-height: 0; }
+  .actions { padding: 16px 22px 22px; }
+
+  .cta {
+    width: 100%;
+    padding: 20px 24px;
+    border: 0; border-radius: 36px;
+    font-family: var(--font-display, "Fredoka", sans-serif);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -.01em;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    will-change: transform;
+  }
+  .cta:active { transform: translateY(1px) scale(.985); }
+  .cta--sunset {
+    background: var(--sunset); color: #fff;
+    box-shadow: 0 10px 24px -10px rgba(252,103,8,.55), inset 0 -2px 0 rgba(0,0,0,.08);
+  }
+  .cta--sunset:hover { filter: brightness(1.04); }
+  .cta--mustard {
+    background: var(--mustard); color: var(--ink);
+    box-shadow: 0 10px 24px -12px rgba(236,195,74,.7), inset 0 -2px 0 rgba(0,0,0,.06);
+  }
+
+  /* Screen 1 */
+  .s1 .hero {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    gap: 18px; padding-top: 8px;
+  }
+  .mascot {
+    position: relative; width: min(64vw, 240px); aspect-ratio: 1/1;
+    display: grid; place-items: center;
+  }
+  .mascot::before {
+    content: ""; position: absolute; inset: 6%;
+    background: radial-gradient(closest-side, rgba(236,195,74,.55), rgba(236,195,74,0) 70%);
+    filter: blur(8px); z-index: 0;
+    animation: breathe 5s ease-in-out infinite;
+  }
+  .mascot img {
+    position: relative; z-index: 1;
+    width: 100%; height: 100%; object-fit: contain;
+    filter: drop-shadow(0 14px 18px rgba(27,27,27,.18));
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: .85; }
+    50%      { transform: scale(1.08); opacity: 1; }
+  }
+
+  .h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(32px, 9.2vw, 40px);
+    line-height: .98; letter-spacing: -.03em;
+    color: var(--ink); margin: 0;
+  }
+  .lede {
+    font-size: 17px; line-height: 1.45;
+    color: rgba(27,27,27,.78);
+    margin: 0; padding: 0 6px; max-width: 32ch;
+  }
+
+  /* Screens 2 & 3 */
+  .frame {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    padding: 8px 4px;
+  }
+  .frame p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(26px, 7.4vw, 32px);
+    line-height: 1.1; letter-spacing: -.025em;
+    color: var(--ink);
+  }
+  .accent-moss { color: var(--moss); }
+  .accent-sunset { color: var(--sunset); }
+  .glyph-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 28px;
+    color: rgba(27,27,27,.45);
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    font-weight: 700;
+  }
+  .glyph-row::before {
+    content: ""; width: 28px; height: 1px; background: currentColor; opacity: .5;
+  }
+
+  /* Screen 4 */
+  .q-head { padding-top: 8px; }
+  .step-label {
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--moss-dark, #5e6b48); font-weight: 700;
+  }
+  .q-title {
+    margin: 10px 0 22px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(26px, 7.6vw, 30px);
+    line-height: 1.05; letter-spacing: -.025em;
+    color: var(--ink);
+  }
+  .options {
+    display: flex; flex-direction: column; gap: 10px;
+    overflow-y: auto; padding-bottom: 12px;
+    -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+            mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+  }
+  .opt {
+    text-align: left; cursor: pointer;
+    background: #F8E8C9;
+    border: 1.5px solid rgba(27,27,27,.08);
+    border-radius: 22px;
+    padding: 18px 20px;
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 16.5px;
+    color: var(--ink); letter-spacing: -.005em;
+    box-shadow: 0 3px 0 0 rgba(27,27,27,.06);
+    transition: transform .12s ease, box-shadow .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .opt:hover { background: #FBEDCF; border-color: rgba(27,27,27,.14); }
+  .opt:active { transform: translateY(2px); box-shadow: 0 0 0 0 rgba(27,27,27,.06); }
+  .opt.is-picked {
+    background: var(--mustard);
+    border-color: rgba(27,27,27,.2);
+    box-shadow: 0 3px 0 0 rgba(27,27,27,.18);
+  }
+
+  .peek {
+    position: absolute; right: -14px; bottom: -22px;
+    width: 96px; height: 96px;
+    opacity: .55; pointer-events: none;
+    transform: rotate(-6deg);
+  }
+  .peek img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(27,27,27,.18)); }
+
+  /* Screen 5 placeholder */
+  .soon {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    gap: 14px; padding: 0 22px;
+  }
+  .soon h2 {
+    margin: 0; font-family: var(--font-display); font-weight: 900;
+    font-size: 30px; letter-spacing: -.025em; color: var(--ink);
+  }
+  .soon p { margin: 0; color: rgba(27,27,27,.7); max-width: 30ch; line-height: 1.45; }
+  .soon .pill {
+    background: rgba(120,120,56,.12); color: var(--moss-dark, #5e6b48);
+    font-weight: 700; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 8px 14px; border-radius: 999px;
+  }
+  .ghost-btn {
+    margin-top: 16px;
+    background: transparent; border: 1.5px solid rgba(27,27,27,.15);
+    border-radius: 999px; padding: 12px 20px; font-weight: 700; cursor: pointer;
+    color: var(--ink);
+  }
+  .ghost-btn:hover { background: rgba(27,27,27,.05); }
+
+  .back {
+    position: absolute; top: 14px; left: 14px;
+    width: 38px; height: 38px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgba(27,27,27,.05);
+    border: 1px solid rgba(27,27,27,.06);
+    cursor: pointer; color: var(--ink);
+    transition: background .15s ease;
+    z-index: 5;
+  }
+  .back:hover { background: rgba(27,27,27,.1); }
+  .back svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" id="phone" aria-label="Kokoro onboarding">
+      <button class="back" id="backBtn" type="button" aria-label="Go back" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <!-- 1 -->
+      <div class="screen s1 is-active" data-step="1">
+        <div class="content">
+          <div class="hero">
+            <div class="mascot">
+              <img src="/assets/kokoro-float.png" alt="Kokoro, a small tanuki monk" />
+            </div>
+            <h1 class="h1">Tell Kokoro what<br/>you can&rsquo;t say<br/>out loud.</h1>
+            <p class="lede">He listens, understands what you&rsquo;re carrying, and creates a short meditation made from your real problem.</p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="cta cta--sunset" data-next>Create my meditation</button>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="screen s2" data-step="2">
+        <div class="progress-wrap"><div class="progress"><span style="width:25%"></span></div></div>
+        <div class="content">
+          <div class="frame">
+            <p>Most meditation apps ask you to <span class="accent-moss">calm down</span> before they understand why you&rsquo;re not okay.</p>
+            <div class="glyph-row">a quiet thought</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="cta cta--mustard" data-next>That&rsquo;s exactly it</button>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="screen s3" data-step="3">
+        <div class="progress-wrap"><div class="progress"><span style="width:50%"></span></div></div>
+        <div class="content">
+          <div class="frame">
+            <p>Kokoro makes a meditation from what you&rsquo;re <span class="accent-sunset">actually</span> going through today.</p>
+            <div class="glyph-row">made for this moment</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="cta cta--sunset" data-next>Start</button>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="screen s4" data-step="4">
+        <div class="progress-wrap"><div class="progress"><span style="width:75%"></span></div></div>
+        <div class="content">
+          <div class="q-head">
+            <div class="step-label">Question 1 of 12</div>
+            <h2 class="q-title">What made you click today?</h2>
+          </div>
+          <div class="options" id="q1-options">
+            <button class="opt" data-answer="overthinking">I&rsquo;m overthinking everything</button>
+            <button class="opt" data-answer="heavy">I feel emotionally heavy</button>
+            <button class="opt" data-answer="cant-talk">I can&rsquo;t talk about something</button>
+            <button class="opt" data-answer="calm-fast">I need to calm down fast</button>
+            <button class="opt" data-answer="lost">I feel lost or stuck</button>
+            <button class="opt" data-answer="stronger">I want to become a stronger me</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 placeholder -->
+      <div class="screen s5" data-step="5">
+        <div class="progress-wrap"><div class="progress"><span style="width:100%"></span></div></div>
+        <div class="soon">
+          <span class="pill">Coming next</span>
+          <h2>Kokoro heard you.</h2>
+          <p>The next questions go a little deeper &mdash; how loud it is in your head, what it actually feels like, what kind of session would help.</p>
+          <button class="ghost-btn" id="restart">Start over</button>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+      var backBtn = document.getElementById('backBtn');
+      var current = 0;
+      var answers = {};
+
+      function show(i) {
+        if (i < 0 || i >= screens.length) return;
+        screens[current].classList.remove('is-active');
+        current = i;
+        screens[current].classList.add('is-active');
+        backBtn.style.display = current === 0 ? 'none' : 'grid';
+      }
+
+      document.querySelectorAll('[data-next]').forEach(function (btn) {
+        btn.addEventListener('click', function () { show(current + 1); });
+      });
+
+      backBtn.addEventListener('click', function () { show(current - 1); });
+
+      document.querySelectorAll('#q1-options .opt').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('#q1-options .opt').forEach(function (x) { x.classList.remove('is-picked'); });
+          b.classList.add('is-picked');
+          answers.q1 = b.getAttribute('data-answer');
+          setTimeout(function () { show(current + 1); }, 280);
+        });
+      });
+
+      var restart = document.getElementById('restart');
+      if (restart) restart.addEventListener('click', function () {
+        document.querySelectorAll('#q1-options .opt').forEach(function (x) { x.classList.remove('is-picked'); });
+        answers = {};
+        show(0);
+      });
+    })();
+  </script>
+</body>
+</html>
