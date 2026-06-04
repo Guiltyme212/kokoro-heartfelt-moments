@@ -212,6 +212,17 @@
   .bonsai{ position:absolute; bottom:206px; left:-18px; width:80px; z-index:3; mix-blend-mode:multiply; pointer-events:none; opacity:.9; }
   .lantern{ position:absolute; bottom:208px; right:-6px; width:56px; z-index:3; mix-blend-mode:multiply; pointer-events:none; opacity:.88; }
 
+  /* short canvases (e.g. iPhone SE) — tighten the hero so the mascot
+     never overlaps the footer copy. .short is toggled from fit() in JS. */
+  .frame.short #scr-hero .hero-top{ padding-top:34px; }
+  .frame.short .hero-h1{ font-size:30px; }
+  .frame.short .hero-mascot{ width:248px; height:248px; top:150px; }
+  .frame.short .hero-bubble{ top:150px; }
+  .frame.short .sakura{ width:200px; }
+  .frame.short .bonsai{ bottom:188px; width:66px; }
+  .frame.short .lantern{ bottom:190px; width:48px; }
+  .frame.short .hero-sub{ margin-bottom:12px; }
+
   /* ===================================================== */
   /*  SCREEN 2 — Q1 single-select cards                    */
   /* ===================================================== */
@@ -880,6 +891,6 @@
 </template>
 
 <script src="quiz-data.js?v=1"></script>
-<script src="quiz-flow.js?v=28"></script>
+<script src="quiz-flow.js?v=29"></script>
 </body>
 </html>

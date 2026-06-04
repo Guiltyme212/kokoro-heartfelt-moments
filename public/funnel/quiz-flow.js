@@ -28,15 +28,40 @@
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) play(); });
 })();
 
-/* ---------- fit the flat screen to the viewport ---------- */
+/* ---------- fit the flat screen to the viewport ----------
+   Phones: lock the design to its native 390px width (so every horizontal
+   coordinate stays pixel-perfect), scale to fill the width exactly, and
+   stretch the height to fill the screen — no cream letterbox bars on any
+   device, and the flat-flex layout absorbs the height difference.
+   Desktop: show the phone as a centred card that fits the window height. */
 (function fit(){
   const f = document.getElementById('frame');
+  const DESIGN_W = 390, DESIGN_H = 844;
   function resize(){
-    const pad = 0;
-    const s = Math.min((innerWidth-pad)/390, (innerHeight-pad)/844, 1);
-    f.style.transform = 'scale('+s+')';
+    // visualViewport is the source of truth on iOS (accounts for the URL bar)
+    const vv = window.visualViewport;
+    const vw = Math.round(vv ? vv.width  : window.innerWidth);
+    const vh = Math.round(vv ? vv.height : window.innerHeight);
+    let ih = DESIGN_H; // internal (design-space) height of the frame
+    if(vw <= 600){
+      const s = vw / DESIGN_W;          // fill width exactly
+      ih = vh / s;                      // → scaled height == vh, fills the screen
+      f.style.width  = DESIGN_W + 'px';
+      f.style.height = ih + 'px';
+      f.style.transform = 'scale(' + s + ')';
+    } else {
+      const s = Math.min(vh / DESIGN_H, 1);
+      f.style.width  = DESIGN_W + 'px';
+      f.style.height = DESIGN_H + 'px';
+      f.style.transform = 'scale(' + s + ')';
+    }
+    // tag short canvases (e.g. iPhone SE) so the hero can tighten up
+    f.classList.toggle('short', ih < 760);
   }
-  addEventListener('resize', resize); resize();
+  addEventListener('resize', resize);
+  addEventListener('orientationchange', resize);
+  if(window.visualViewport) visualViewport.addEventListener('resize', resize);
+  resize();
 })();
 
 /* ---------- progress precompute (named-section goal-gradient) ---------- */
