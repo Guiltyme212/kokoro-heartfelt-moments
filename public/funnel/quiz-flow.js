@@ -110,7 +110,7 @@ const I_GOOGLE='<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.6
 const flowEl = document.getElementById('flow');
 const heroEl = document.getElementById('scr-hero');
 let pos = 0;
-const state = { answers:{}, plan:0, name:'' };
+const state = { answers:{}, plan:0, name:'', email:'' };
 function lab(k,f){ const a=state.answers[k]; return (a&&a.label)?a.label:f; }
 
 /* ---------- chrome ---------- */
@@ -351,7 +351,7 @@ R.paywall = s => {
     '<div class="plans">'+plans+'</div>'+
     '<div class="pw-note">'+svg('bell',16)+' you start free. we\u2019ll remind you 2 days before it renews at \u20ac7/mo \u2014 cancel anytime, in two taps.</div>'+
     '<div class="pw-fine"><a>restore</a> \u00b7 <a>terms</a> \u00b7 <a>privacy</a></div><div style="height:10px"></div></div>'+
-    '<div class="qfoot"><button class="cta" data-act="next">'+s.plans[0].cta+'</button></div>');
+    '<div class="qfoot"><button class="cta" data-pay="1">'+s.plans[0].cta+'</button></div>');
 };
 
 R.success = s => {
@@ -545,8 +545,25 @@ R.wire_preview = (s, root) => {
   }
 };
 
+/* Stripe payment links, one per plan (index matches STEPS paywall plans:
+   0 = 7-day free trial, 1 = monthly, 2 = yearly). Apple Pay shows one-tap
+   on these pages automatically. */
+const STRIPE_LINKS = [
+  'https://buy.stripe.com/test_3cI28q8kLbCtd1S62u5J600', // trial (7 days free -> €7/mo)
+  'https://buy.stripe.com/test_eVqeVcasTdKB5zqcqS5J601', // monthly €7/mo
+  'https://buy.stripe.com/test_fZufZg0Sj5e5aTKfD45J602'  // yearly €39.99/yr
+];
+function goToCheckout(){
+  const link = STRIPE_LINKS[state.plan] || STRIPE_LINKS[0];
+  const email = (state.email || '').trim();
+  const url = email && /.+@.+\..+/.test(email)
+    ? link + '?prefilled_email=' + encodeURIComponent(email)
+    : link;
+  window.location.href = url;
+}
+
 R.wire_paywall = (s, root) => {
-  const cta = root.querySelector('[data-act="next"]');
+  const cta = root.querySelector('[data-pay]');
   root.querySelectorAll('.plan').forEach(p=>{
     p.onclick = ()=>{
       root.querySelectorAll('.plan').forEach(x=>x.classList.remove('is-on'));
@@ -554,6 +571,12 @@ R.wire_paywall = (s, root) => {
       cta.textContent = s.plans[state.plan].cta;
     };
   });
+  cta.addEventListener('click', goToCheckout);
+};
+
+R.wire_email = (s, root) => {
+  const inp = root.querySelector('.email-field');
+  if(inp) inp.addEventListener('input', ()=>{ state.email = inp.value.trim(); });
 };
 
 R.wire_commit = (s, root) => {
