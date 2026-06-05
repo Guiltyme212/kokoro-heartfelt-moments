@@ -553,13 +553,23 @@ const STRIPE_LINKS = [
   'https://buy.stripe.com/6oU8wO469gNih221YK5os04', // monthly €7/mo
   'https://buy.stripe.com/00w5kCbyBaoUbHI8n85os05'  // yearly €39.99/yr
 ];
+/* Meta Pixel — safe no-op if blocked/not loaded */
+function fbtrack(ev, params){ try{ if(window.fbq) fbq('track', ev, params||{}); }catch(e){} }
+
+const PLAN_VALUE = [7, 7, 39.99];          // trial / monthly / yearly (EUR)
+const PLAN_NAME  = ['trial','monthly','yearly'];
+
 function goToCheckout(){
   const link = STRIPE_LINKS[state.plan] || STRIPE_LINKS[0];
   const email = (state.email || '').trim();
   const url = email && /.+@.+\..+/.test(email)
     ? link + '?prefilled_email=' + encodeURIComponent(email)
     : link;
-  window.location.href = url;
+  // strong mid-funnel signal Meta can optimize toward
+  fbtrack('InitiateCheckout', { value: PLAN_VALUE[state.plan] || 7, currency: 'EUR',
+                                content_name: PLAN_NAME[state.plan] || 'trial' });
+  // small delay so the event flushes before we leave the page
+  setTimeout(()=>{ window.location.href = url; }, 200);
 }
 
 R.wire_paywall = (s, root) => {
@@ -576,7 +586,11 @@ R.wire_paywall = (s, root) => {
 
 R.wire_email = (s, root) => {
   const inp = root.querySelector('.email-field');
+  const go  = root.querySelector('.email-go');
   if(inp) inp.addEventListener('input', ()=>{ state.email = inp.value.trim(); });
+  const fireLead = ()=>{ const e=(state.email||'').trim(); if(/.+@.+\..+/.test(e)) fbtrack('Lead', { content_name:'email_captured' }); };
+  if(go)  go.addEventListener('click', fireLead);
+  if(inp) inp.addEventListener('keydown', ev=>{ if(ev.key==='Enter') fireLead(); });
 };
 
 R.wire_commit = (s, root) => {
