@@ -1,0 +1,9 @@
+# Bare clean-URLs cannot render on this host (served as octet-stream).
+# Send them to the real .html so /funnel stops downloading and just works.
+/funnel      /funnel/index.html   301
+/funnel/     /funnel/index.html   301
+/start       /start.html          301
+/help        /help.html           301
+/privacy     /privacy.html        301
+/terms       /terms.html          301
+/pitch       /pitch.html          301
