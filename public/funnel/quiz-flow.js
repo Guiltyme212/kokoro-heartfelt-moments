@@ -549,9 +549,9 @@ R.wire_preview = (s, root) => {
    0 = 7-day free trial, 1 = monthly, 2 = yearly). Apple Pay shows one-tap
    on these pages automatically. */
 const STRIPE_LINKS = [
-  'https://buy.stripe.com/test_3cI28q8kLbCtd1S62u5J600', // trial (7 days free -> €7/mo)
-  'https://buy.stripe.com/test_eVqeVcasTdKB5zqcqS5J601', // monthly €7/mo
-  'https://buy.stripe.com/test_fZufZg0Sj5e5aTKfD45J602'  // yearly €39.99/yr
+  'https://buy.stripe.com/bJe00i469bsY6no0UG5os03', // trial (7 days free -> €7/mo)
+  'https://buy.stripe.com/6oU8wO469gNih221YK5os04', // monthly €7/mo
+  'https://buy.stripe.com/00w5kCbyBaoUbHI8n85os05'  // yearly €39.99/yr
 ];
 function goToCheckout(){
   const link = STRIPE_LINKS[state.plan] || STRIPE_LINKS[0];
