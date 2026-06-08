@@ -672,8 +672,8 @@ const PLAN_VALUE = [39.99, 14.99, 6.99];   // annual / monthly / weekly (EUR)
 const PLAN_NAME  = ['yearly','monthly','weekly'];
 
 /* Email capture: a Google Apps Script Web App URL that appends rows to the Sheet.
-   Empty = no-op (the Lead pixel still fires). Paste the deployed /exec URL here. */
-const EMAIL_ENDPOINT = '';
+   Empty = no-op (the Lead pixel still fires). */
+const EMAIL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwRuFGWNtzxvXXc4dDYdjOf2gV5Yl8pKzJr03zr1Egueq3bPhN3pm47-y8RD__9R0Ux/exec';
 
 function goToCheckout(){
   const link = STRIPE_LINKS[state.plan] || STRIPE_LINKS[0];
