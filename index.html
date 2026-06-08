@@ -20,6 +20,17 @@
     src="https://www.facebook.com/tr?id=1688497089098770&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
+  <!-- Funnel post-checkout: fire Purchase when Stripe redirects here with ?purchased=1 -->
+  <script>
+  (function(){
+    try{
+      var q = new URLSearchParams(location.search);
+      if(q.get('purchased') === '1' && window.fbq){
+        fbq('track','Purchase', { value: parseFloat(q.get('value')||'0')||0, currency:'EUR', content_name: q.get('plan')||'' });
+      }
+    }catch(e){}
+  })();
+  </script>
 
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0"/>
 <meta http-equiv="Pragma" content="no-cache"/>
