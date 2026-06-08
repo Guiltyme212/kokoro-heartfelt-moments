@@ -28,6 +28,9 @@
       if(q.get('purchased') === '1' && window.fbq){
         fbq('track','Purchase', { value: parseFloat(q.get('value')||'0')||0, currency:'EUR', content_name: q.get('plan')||'' });
       }
+      if(q.get('trial') === '1' && window.fbq){
+        fbq('track','StartTrial', { value: parseFloat(q.get('value')||'0')||0, currency:'EUR', content_name: q.get('plan')||'trial' });
+      }
     }catch(e){}
   })();
   </script>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Kokoro — you're in</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ECC34A'/%3E%3C/svg%3E"/>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1688497089098770');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1688497089098770&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
+<!-- Conversion event: Purchase for paid plans, StartTrial for the free trial -->
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var plan = q.get('plan') || '';
+  var value = parseFloat(q.get('value') || '0') || 0;
+  try{
+    if(plan === 'trial'){
+      fbq('track','StartTrial', { value: 0, currency: 'EUR', predicted_ltv: 7, content_name: 'trial' });
+    } else {
+      fbq('track','Purchase', { value: value, currency: 'EUR', content_name: plan });
+    }
+  }catch(e){}
+})();
+</script>
+<link rel="stylesheet" href="../colors_and_type.css"/>
+<style>
+  html,body{ margin:0; height:100%; }
+  body{ background:#FCF0DB; color:var(--ink,#1B1B1B);
+    font-family:var(--font-body,"Fredoka",system-ui,sans-serif);
+    -webkit-font-smoothing:antialiased; display:grid; place-items:center; text-align:center; padding:32px; }
+  .wrap{ max-width:340px; }
+  .disc{ width:120px; height:120px; border-radius:50%; overflow:hidden; margin:0 auto 22px;
+    background:#FCF0DB; box-shadow:0 22px 50px -22px rgba(80,72,40,.45); }
+  .disc img{ width:100%; height:100%; object-fit:cover; transform:scale(1.12) translateY(7%); mix-blend-mode:multiply; }
+  .eye{ font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--moss,#787838); }
+  h1{ font-family:var(--font-display,"Fredoka",sans-serif); font-weight:800; font-size:28px; line-height:1.14;
+    letter-spacing:-.025em; margin:10px 0 0; text-wrap:balance; }
+  p{ font-size:15px; font-weight:500; color:var(--ink-muted,#5b5647); line-height:1.5; margin:12px 0 0; }
+  .cta{ display:inline-flex; align-items:center; justify-content:center; margin-top:26px; height:54px; padding:0 28px;
+    border-radius:999px; background:var(--mustard,#ECC34A); color:var(--ink,#1B1B1B); text-decoration:none;
+    font-family:var(--font-display,"Fredoka",sans-serif); font-weight:700; font-size:16px;
+    box-shadow:0 8px 20px -8px rgba(236,195,74,.7); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="disc"><img src="../assets/kokoro-meditate.png" alt="Kokoro"/></div>
+    <div class="eye">welcome in</div>
+    <h1>you're in. your first session is ready.</h1>
+    <p>open the app and kokoro will be waiting — your meditation is already there.</p>
+    <a class="cta" href="https://apps.apple.com/app/id000000000">open kokoro</a>
+  </div>
+</body>
+</html>
