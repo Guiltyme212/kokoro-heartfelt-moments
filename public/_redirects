@@ -2,6 +2,27 @@
 # Send them to the real .html so /funnel stops downloading and just works.
 /funnel      /funnel/index.html   301
 /funnel/     /funnel/index.html   301
+
+# Funnel A/B variations — directory URLs 404 on this host, so map them
+# (with + without trailing slash) to the real index.html.
+/funnel/standard    /funnel/standard/index.html   301
+/funnel/standard/   /funnel/standard/index.html   301
+/funnel/express     /funnel/express/index.html    301
+/funnel/express/    /funnel/express/index.html    301
+/funnel/trial       /funnel/trial/index.html      301
+/funnel/trial/      /funnel/trial/index.html      301
+/funnel/deep        /funnel/deep/index.html       301
+/funnel/deep/       /funnel/deep/index.html       301
+/funnel/value       /funnel/value/index.html      301
+/funnel/value/      /funnel/value/index.html      301
+
+# Short ad links (kokoromind.com/trial etc.) for cleaner ad destinations.
+/standard    /funnel/standard/index.html   301
+/express     /funnel/express/index.html    301
+/trial       /funnel/trial/index.html      301
+/deep        /funnel/deep/index.html       301
+/value       /funnel/value/index.html      301
+
 /start       /start.html          301
 /help        /help.html           301
 /privacy     /privacy.html        301
