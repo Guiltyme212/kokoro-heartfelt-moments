@@ -65,7 +65,7 @@ and plain DOM JS. No new dependencies unless we discuss it first.
 
 ## Funnel + tracking map
 
-**Analytics = Meta Pixel only** (ID `1688497089098770`). No GA / GTM / PostHog yet.
+**Analytics = Meta Pixel only** (ID `1318180623856061`). No GA / GTM / PostHog yet.
 Safe wrapper: `fbtrack(ev, params)` in `quiz-flow.js` (~L557) — no-op if the pixel is blocked.
 
 User journey: **Landing (`index.html`) → Quiz (`/funnel/`) → email → paywall → Stripe → `thanks.html`.**
