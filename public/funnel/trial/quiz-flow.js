@@ -665,7 +665,7 @@ const STRIPE_LINKS = [
   'https://buy.stripe.com/7sY8wO0TX1So8vw9rc5os0e'  // yearly €59.99/yr
 ];
 /* Meta Pixel — safe no-op if blocked/not loaded */
-function fbtrack(ev, params){ try{ if(window.fbq) fbq('track', ev, params||{}); }catch(e){} }
+function fbtrack(ev, params){ try{ if(window.capiTrack){ capiTrack(ev, params||{}); } else if(window.fbq){ fbq('track', ev, params||{}); } }catch(e){} }
 
 const PLAN_VALUE = [19.99, 59.99];   // 7-day free trial (-> €19.99/mo) / yearly (EUR)
 const PLAN_NAME  = ['trial','yearly'];
@@ -714,7 +714,7 @@ R.wire_paywall = (s, root) => {
 R.wire_email = (s, root) => {
   const inp = root.querySelector('.email-field');
   const go  = root.querySelector('.email-go');
-  if(inp) inp.addEventListener('input', ()=>{ state.email = inp.value.trim(); });
+  if(inp) inp.addEventListener('input', ()=>{ state.email = inp.value.trim(); window.__capiEmail = state.email; });
   const fireLead = ()=>{
     const e=(state.email||'').trim();
     if(!/.+@.+\..+/.test(e)) return;

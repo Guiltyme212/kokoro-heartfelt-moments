@@ -16,7 +16,20 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '1318180623856061');
-fbq('track', 'PageView');
+/* CAPI bridge: every fbq event also fires server-side with a shared eventID (dedup). */
+(function(){
+  var EP='https://kokoro-heartfelt-moments.lovable.app/api/public/meta-capi';
+  function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
+  function eid(){return (self.crypto&&crypto.randomUUID)?crypto.randomUUID():'e'+Date.now()+Math.round(Math.random()*1e9);}
+  try{var cid=new URLSearchParams(location.search).get('fbclid');if(cid&&!ck('_fbc'))document.cookie='_fbc=fb.1.'+Date.now()+'.'+cid+';path=/;max-age=7776000;samesite=lax';}catch(e){}
+  window.capiTrack=function(name,params){
+    params=params||{};var id=eid();
+    try{if(window.fbq)fbq('track',name,params,{eventID:id});}catch(e){}
+    try{fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain'},keepalive:true,body:JSON.stringify({event_name:name,event_id:id,event_time:Math.floor(Date.now()/1000),event_source_url:location.href,email:window.__capiEmail||'',fbp:ck('_fbp'),fbc:ck('_fbc'),custom_data:params})}).catch(function(){});}catch(e){}
+    return id;
+  };
+  capiTrack('PageView');
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1318180623856061&ev=PageView&noscript=1"/></noscript>
@@ -29,9 +42,9 @@ src="https://www.facebook.com/tr?id=1318180623856061&ev=PageView&noscript=1"/></
   var value = parseFloat(q.get('value') || '0') || 0;
   try{
     if(plan === 'trial'){
-      fbq('track','StartTrial', { value: 0, currency: 'EUR', predicted_ltv: 7, content_name: 'trial' });
+      (window.capiTrack||function(n,p){fbq('track',n,p)})('StartTrial', { value: 0, currency: 'EUR', predicted_ltv: 7, content_name: 'trial' });
     } else {
-      fbq('track','Purchase', { value: value, currency: 'EUR', content_name: plan });
+      (window.capiTrack||function(n,p){fbq('track',n,p)})('Purchase', { value: value, currency: 'EUR', content_name: plan });
     }
   }catch(e){}
 })();
