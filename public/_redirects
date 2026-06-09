@@ -15,6 +15,8 @@
 /funnel/deep/       /funnel/deep/index.html       301
 /funnel/value       /funnel/value/index.html      301
 /funnel/value/      /funnel/value/index.html      301
+/funnel/1           /funnel/1/index.html          301
+/funnel/1/          /funnel/1/index.html          301
 
 # Short ad links (kokoromind.com/trial etc.) for cleaner ad destinations.
 /standard    /funnel/standard/index.html   301
@@ -22,6 +24,7 @@
 /trial       /funnel/trial/index.html      301
 /deep        /funnel/deep/index.html       301
 /value       /funnel/value/index.html      301
+/1           /funnel/1/index.html          301
 
 /start       /start.html          301
 /help        /help.html           301
