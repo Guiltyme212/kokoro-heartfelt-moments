@@ -348,15 +348,22 @@ R.commit = s => {
 
 R.paywall = s => {
   const nm = state.name ? state.name+'\u2019s' : 'your';
-  const plans = s.plans.map((p,i)=>
-    '<div class="plan'+(i===0?' is-on':'')+'" data-i="'+i+'">'+
+  const plans = s.plans.map((p,i)=>{
+    /* big per-day hero number, small real price (competitor-proven layout) */
+    const m = (p.perDay||'').match(/\$([0-9]+)\.([0-9]{2})/);
+    const pday = m
+      ? '<span class="pd-cur">$</span><span class="pd-int">'+m[1]+'</span><span class="pd-dec">.'+m[2]+'</span><small>per day</small>'
+      : '<small>'+p.perDay+'</small>';
+    return '<div class="plan'+(i===0?' is-on':'')+'" data-i="'+i+'">'+
       (p.best?'<span class="besttag">best value</span>':'')+
       '<div class="radio"></div>'+
-      '<div class="pn"><b>'+p.name+'</b><span>'+p.note+'</span></div>'+
-      '<div class="pp">'+(p.anchor?'<s>'+p.anchor+'</s> ':'')+p.price+
-        (p.save?'<span class="psave">'+p.save+'</span>':'')+
-        '<small>'+p.perDay+'</small></div>'+
-    '</div>').join('');
+      '<div class="pn"><b>'+p.name+'</b>'+
+        '<span class="pn-price">'+(p.anchor?'<s>'+p.anchor+'</s> ':'')+p.price+
+        (p.save?'<span class="psave">'+p.save+'</span>':'')+'</span>'+
+      '</div>'+
+      '<div class="pday">'+pday+'</div>'+
+    '</div>';
+  }).join('');
   const cards = '<div class="pay-cards">'+
     '<span class="pc-badge pc-pay">'+I_APPLE+'Pay</span>'+
     '<span class="pc-badge pc-pay">'+I_GOOGLE+'Pay</span>'+
@@ -661,14 +668,14 @@ R.wire_preview = (s, root) => {
    created via the Stripe API, and set each link's success_url to
    thanks.html?plan=<name>&value=<value> so Purchase fires. */
 const STRIPE_LINKS = [
-  'https://buy.stripe.com/8x29AS8mp54A3bcfPA5os08', // annual  €39.99/yr (live)
-  'https://buy.stripe.com/14A28qcCF1Soh225aW5os09', // monthly €14.99/mo (live)
-  'https://buy.stripe.com/8x27sK32540w9zAdHs5os0a'  // weekly  €6.99/wk  (live)
+  'https://buy.stripe.com/cNi28qgSV2Ws6no32O5os0m', // annual  $39.99/yr (live, USD)
+  'https://buy.stripe.com/cNi5kCdGJ0Ok278gTE5os0n', // monthly $14.99/mo (live, USD)
+  'https://buy.stripe.com/dRmbJ0dGJbsY134eLw5os0o'  // weekly  $6.99/wk  (live, USD)
 ];
 /* Meta Pixel — safe no-op if blocked/not loaded */
 function fbtrack(ev, params){ try{ if(window.capiTrack){ capiTrack(ev, params||{}); } else if(window.fbq){ fbq('track', ev, params||{}); } }catch(e){} }
 
-const PLAN_VALUE = [39.99, 14.99, 6.99];   // annual / monthly / weekly (EUR)
+const PLAN_VALUE = [39.99, 14.99, 6.99];   // annual / monthly / weekly (USD)
 const PLAN_NAME  = ['yearly','monthly','weekly'];
 
 /* Email capture: a Google Apps Script Web App URL that appends rows to the Sheet.
@@ -682,7 +689,7 @@ function goToCheckout(){
     ? link + '?prefilled_email=' + encodeURIComponent(email)
     : link;
   // strong mid-funnel signal Meta can optimize toward
-  fbtrack('InitiateCheckout', { value: PLAN_VALUE[state.plan] || 39.99, currency: 'EUR',
+  fbtrack('InitiateCheckout', { value: PLAN_VALUE[state.plan] || 39.99, currency: 'USD',
                                 content_name: PLAN_NAME[state.plan] || 'yearly' });
   // small delay so the event flushes before we leave the page
   setTimeout(()=>{ window.location.href = url; }, 200);

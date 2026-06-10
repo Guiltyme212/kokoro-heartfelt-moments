@@ -25,11 +25,12 @@
   (function(){
     try{
       var q = new URLSearchParams(location.search);
+      var cur = q.get('cur') || 'EUR';
       if(q.get('purchased') === '1' && window.fbq){
-        fbq('track','Purchase', { value: parseFloat(q.get('value')||'0')||0, currency:'EUR', content_name: q.get('plan')||'' });
+        fbq('track','Purchase', { value: parseFloat(q.get('value')||'0')||0, currency:cur, content_name: q.get('plan')||'' });
       }
       if(q.get('trial') === '1' && window.fbq){
-        fbq('track','StartTrial', { value: parseFloat(q.get('value')||'0')||0, currency:'EUR', content_name: q.get('plan')||'trial' });
+        fbq('track','StartTrial', { value: parseFloat(q.get('value')||'0')||0, currency:cur, content_name: q.get('plan')||'trial' });
       }
     }catch(e){}
   })();

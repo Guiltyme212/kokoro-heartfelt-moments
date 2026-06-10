@@ -317,9 +317,9 @@ const STEPS = [
       'sessions that adapt to what you say'
     ],
     plans:[
-      {name:'12 months', note:'billed €39.99 / year', anchor:'€79.99', price:'€39.99', perDay:'€0.11 / day', best:true, save:'save 50%', cta:'get my plan'},
-      {name:'1 month', note:'billed monthly · cancel anytime', anchor:'€24.99', price:'€14.99', perDay:'€0.50 / day', cta:'get my plan'},
-      {name:'1 week', note:'billed weekly · cancel anytime', anchor:'€9.99', price:'€6.99', perDay:'€1.00 / day', cta:'get my plan'}
+      {name:'12 months', note:'billed $39.99 / year', anchor:'$79.99', price:'$39.99', perDay:'$0.11 / day', best:true, save:'save 50%', cta:'get my plan'},
+      {name:'1 month', note:'billed monthly · cancel anytime', anchor:'$24.99', price:'$14.99', perDay:'$0.50 / day', cta:'get my plan'},
+      {name:'1 week', note:'billed weekly · cancel anytime', anchor:'$9.99', price:'$6.99', perDay:'$1.00 / day', cta:'get my plan'}
     ],
     reasons:[
       {k:'made from your words', v:'not a generic library — tonight’s sit is built from what you told kokoro.'},
