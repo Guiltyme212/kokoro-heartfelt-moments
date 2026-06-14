@@ -84,12 +84,20 @@ app.post("/api/meta-capi", express.text({ type: () => true, limit: "32kb" }), as
 });
 
 // Stripe webhook → server-confirmed Purchase/StartTrial (authoritative, deduped by session id).
-app.post("/api/stripe-webhook", express.raw({ type: () => true, limit: "1mb" }), async (req, res) => {
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+// Collect the raw body manually — Stripe signs exact bytes, and this is more reliable than
+// express.raw's content-type matching for signature verification.
+function collectRawBody(req, res, next) {
+  const chunks = [];
+  req.on("data", (c) => chunks.push(c));
+  req.on("end", () => { req.rawBody = Buffer.concat(chunks).toString("utf8"); next(); });
+  req.on("error", () => res.status(400).send("body read error"));
+}
+app.post("/api/stripe-webhook", collectRawBody, async (req, res) => {
+  const secret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
   if (!secret) return res.status(500).send("webhook secret not configured");
   const sig = req.headers["stripe-signature"] || "";
   const parts = Object.fromEntries(sig.split(",").map((kv) => kv.split("=")));
-  const raw = Buffer.isBuffer(req.body) ? req.body.toString("utf8") : String(req.body || "");
+  const raw = req.rawBody || "";
   if (!parts.t || !parts.v1) return res.status(400).send("bad signature header");
   const expected = crypto.createHmac("sha256", secret).update(`${parts.t}.${raw}`).digest("hex");
   let valid = false; try { valid = crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(parts.v1)); } catch { valid = false; }
