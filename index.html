@@ -25,7 +25,7 @@
   (function(){
     try{
       var q = new URLSearchParams(location.search);
-      var cur = q.get('cur') || 'EUR';
+      var cur = q.get('cur') || 'USD';
       if(q.get('purchased') === '1' && window.fbq){
         fbq('track','Purchase', { value: parseFloat(q.get('value')||'0')||0, currency:cur, content_name: q.get('plan')||'' });
       }

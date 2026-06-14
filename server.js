@@ -51,11 +51,18 @@ async function sendToMeta(event) {
   const payload = { data: [event] };
   if (process.env.META_TEST_EVENT_CODE) payload.test_event_code = process.env.META_TEST_EVENT_CODE;
   const url = `https://graph.facebook.com/${GRAPH_VERSION}/${META_DATASET_ID}/events?access_token=${token}`;
-  const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
-  const text = await res.text();
-  let meta; try { meta = JSON.parse(text); } catch { meta = text; }
-  return { ok: res.status === 200, status: res.status, meta };
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 5000);
+  try {
+    const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload), signal: ctl.signal });
+    const text = await res.text();
+    let meta; try { meta = JSON.parse(text); } catch { meta = text; }
+    return { ok: res.status === 200, status: res.status, meta };
+  } catch (e) {
+    return { ok: false, status: 0, meta: { error: "meta fetch failed", detail: String(e) } };
+  } finally { clearTimeout(timer); }
 }
+const processedSessions = new Set(); // webhook idempotency (in-memory; Meta also dedupes by event_id)
 
 // Browser CAPI bridge endpoint (same-origin POST from the funnel pages).
 app.options("/api/meta-capi", (req, res) => { setCors(req, res); res.status(204).end(); });
@@ -96,36 +103,42 @@ app.post("/api/stripe-webhook", collectRawBody, async (req, res) => {
   const secret = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
   if (!secret) return res.status(500).send("webhook secret not configured");
   const sig = req.headers["stripe-signature"] || "";
-  const parts = Object.fromEntries(sig.split(",").map((kv) => kv.split("=")));
+  const t = (sig.match(/(?:^|,)t=([^,]+)/) || [])[1];
+  const v1s = sig.split(",").filter((kv) => kv.startsWith("v1=")).map((kv) => kv.slice(3));
   const raw = req.rawBody || "";
-  if (!parts.t || !parts.v1) return res.status(400).send("bad signature header");
-  const expected = crypto.createHmac("sha256", secret).update(`${parts.t}.${raw}`).digest("hex");
-  let valid = false; try { valid = crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(parts.v1)); } catch { valid = false; }
+  if (!t || v1s.length !== 1) return res.status(400).send("bad signature header");
+  const expected = crypto.createHmac("sha256", secret).update(`${t}.${raw}`).digest("hex");
+  let valid = false; try { valid = crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(v1s[0])); } catch { valid = false; }
   if (!valid) return res.status(400).send("signature mismatch");
-  if (Math.abs(Math.floor(Date.now() / 1000) - Number(parts.t)) > 300) return res.status(400).send("stale");
+  if (Math.abs(Math.floor(Date.now() / 1000) - Number(t)) > 300) return res.status(400).send("stale");
   let evt; try { evt = JSON.parse(raw); } catch { return res.status(400).send("bad json"); }
-  res.status(200).json({ received: true }); // ack immediately, then process
-  try {
-    if (evt.type === "checkout.session.completed") {
-      const s = evt.data.object || {};
-      const md = s.metadata || {};
-      const isTrial = md.plan === "trial" || s.amount_total === 0;
-      const user_data = {};
-      const email = (s.customer_details && s.customer_details.email) || s.customer_email || md.email || "";
-      if (email) user_data.em = [sha256(email)];
-      if (md.fbp) user_data.fbp = md.fbp;
-      if (md.fbc) user_data.fbc = md.fbc;
-      await sendToMeta({
-        event_name: isTrial ? "StartTrial" : "Purchase",
-        event_time: Number(s.created) || Math.floor(Date.now() / 1000),
-        event_id: s.id, // matches the browser thank-you page's eventID (session_id) → dedup
-        action_source: "website",
-        event_source_url: md.source_url || "https://kokoromind.com/funnel/standard/",
-        user_data,
-        custom_data: { value: isTrial ? 0 : (s.amount_total != null ? s.amount_total / 100 : 0), currency: (s.currency || "usd").toUpperCase(), content_name: md.plan || "" },
-      });
-    }
-  } catch (e) { console.error("stripe-webhook processing error:", e); }
+
+  // Process BEFORE acking, so a failed Meta relay returns non-2xx and Stripe retries.
+  if (evt.type !== "checkout.session.completed") return res.status(200).json({ received: true, ignored: evt.type });
+  const s = evt.data.object || {};
+  if (s.id && processedSessions.has(s.id)) return res.status(200).json({ received: true, duplicate: true });
+  const md = s.metadata || {};
+  const isTrial = md.plan === "trial" || s.amount_total === 0;
+  const user_data = {};
+  const email = (s.customer_details && s.customer_details.email) || s.customer_email || md.email || "";
+  if (email) user_data.em = [sha256(email)];
+  if (md.fbp) user_data.fbp = md.fbp;
+  if (md.fbc) user_data.fbc = md.fbc;
+  const r = await sendToMeta({
+    event_name: isTrial ? "StartTrial" : "Purchase",
+    event_time: Number(s.created) || Math.floor(Date.now() / 1000),
+    event_id: s.id, // matches the browser thank-you page's eventID (session_id) → dedup
+    action_source: "website",
+    event_source_url: md.source_url || "https://kokoromind.com/funnel/standard/",
+    user_data,
+    custom_data: { value: isTrial ? 0 : (s.amount_total != null ? s.amount_total / 100 : 0), currency: (s.currency || "usd").toUpperCase(), content_name: md.plan || "" },
+  });
+  if (!r.ok) {
+    console.error("stripe-webhook: Meta relay failed", s.id, r.status, JSON.stringify(r.meta));
+    return res.status(502).json({ received: false, meta_status: r.status }); // non-2xx → Stripe retries
+  }
+  if (s.id) { processedSessions.add(s.id); if (processedSessions.size > 5000) processedSessions.clear(); }
+  return res.status(200).json({ received: true });
 });
 
 // Funnel clean URLs → redirect to the real trailing-slash DIRECTORY.
