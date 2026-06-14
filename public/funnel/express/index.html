@@ -18,7 +18,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1318180623856061');
 /* CAPI bridge: every fbq event also fires server-side with a shared eventID (dedup). */
 (function(){
-  var EP='https://owqcinwvjdbewavjnzas.supabase.co/functions/v1/meta-capi';
+  var EP='/api/meta-capi';
   function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
   function eid(){return (self.crypto&&crypto.randomUUID)?crypto.randomUUID():'e'+Date.now()+Math.round(Math.random()*1e9);}
   try{var cid=new URLSearchParams(location.search).get('fbclid');if(cid&&!ck('_fbc'))document.cookie='_fbc=fb.1.'+Date.now()+'.'+cid+';path=/;max-age=7776000;samesite=lax';}catch(e){}

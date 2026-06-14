@@ -18,12 +18,12 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '1318180623856061');
 /* CAPI bridge: every fbq event also fires server-side with a shared eventID (dedup). */
 (function(){
-  var EP='https://owqcinwvjdbewavjnzas.supabase.co/functions/v1/meta-capi';
+  var EP='/api/meta-capi';
   function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
   function eid(){return (self.crypto&&crypto.randomUUID)?crypto.randomUUID():'e'+Date.now()+Math.round(Math.random()*1e9);}
   try{var cid=new URLSearchParams(location.search).get('fbclid');if(cid&&!ck('_fbc'))document.cookie='_fbc=fb.1.'+Date.now()+'.'+cid+';path=/;max-age=7776000;samesite=lax';}catch(e){}
-  window.capiTrack=function(name,params){
-    params=params||{};var id=eid();
+  window.capiTrack=function(name,params,forcedId){
+    params=params||{};var id=forcedId||eid();
     try{if(window.fbq)fbq('track',name,params,{eventID:id});}catch(e){}
     try{fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain'},keepalive:true,body:JSON.stringify({event_name:name,event_id:id,event_time:Math.floor(Date.now()/1000),event_source_url:location.href,email:window.__capiEmail||'',fbp:ck('_fbp'),fbc:ck('_fbc'),custom_data:params})}).catch(function(){});}catch(e){}
     return id;
@@ -40,11 +40,13 @@ src="https://www.facebook.com/tr?id=1318180623856061&ev=PageView&noscript=1"/></
   var q = new URLSearchParams(location.search);
   var plan = q.get('plan') || '';
   var value = parseFloat(q.get('value') || '0') || 0;
+  var cur = q.get('cur') || 'USD';
+  var sid = q.get('session_id') || '';        // Stripe {CHECKOUT_SESSION_ID} → deterministic dedup with the webhook
   try{
     if(plan === 'trial'){
-      (window.capiTrack||function(n,p){fbq('track',n,p)})('StartTrial', { value: 0, currency: 'EUR', predicted_ltv: 7, content_name: 'trial' });
+      (window.capiTrack||function(n,p,i){fbq('track',n,p,i?{eventID:i}:undefined)})('StartTrial', { value: 0, currency: cur, predicted_ltv: 7, content_name: 'trial' }, sid);
     } else {
-      (window.capiTrack||function(n,p){fbq('track',n,p)})('Purchase', { value: value, currency: 'EUR', content_name: plan });
+      (window.capiTrack||function(n,p,i){fbq('track',n,p,i?{eventID:i}:undefined)})('Purchase', { value: value, currency: cur, content_name: plan }, sid);
     }
   }catch(e){}
 })();
