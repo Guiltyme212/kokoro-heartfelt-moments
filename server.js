@@ -128,23 +128,27 @@ app.post("/api/stripe-webhook", collectRawBody, async (req, res) => {
   } catch (e) { console.error("stripe-webhook processing error:", e); }
 });
 
-// Clean-URL rewrites — mirror of public/_redirects, but as internal 200
-// rewrites (not 301s), so the URL the visitor typed stays put.
-const REWRITES = {
-  // funnel + A/B variants
-  "/funnel": "/funnel/index.html",
-  "/funnel/standard": "/funnel/standard/index.html",
-  "/funnel/express": "/funnel/express/index.html",
-  "/funnel/trial": "/funnel/trial/index.html",
-  "/funnel/deep": "/funnel/deep/index.html",
-  "/funnel/value": "/funnel/value/index.html",
-  // short ad links (kokoromind.com/trial, etc.)
-  "/standard": "/funnel/standard/index.html",
-  "/express": "/funnel/express/index.html",
-  "/trial": "/funnel/trial/index.html",
-  "/deep": "/funnel/deep/index.html",
-  "/value": "/funnel/value/index.html",
-  // standalone pages
+// Funnel clean URLs → redirect to the real trailing-slash DIRECTORY.
+// A 200 rewrite-in-place keeps the slash-less URL, so the page's RELATIVE asset
+// paths (quiz-flow.js, etc.) resolve against the wrong folder (e.g. /funnel/standard
+// loads /funnel/quiz-flow.js — the stale root file). Redirecting to the directory
+// form makes relative paths resolve correctly, and express.static serves index.html.
+const DIR_REDIRECTS = {
+  "/funnel": "/funnel/",
+  "/funnel/standard": "/funnel/standard/",
+  "/funnel/express": "/funnel/express/",
+  "/funnel/trial": "/funnel/trial/",
+  "/funnel/deep": "/funnel/deep/",
+  "/funnel/value": "/funnel/value/",
+  // short ad links (kokoromind.com/trial, etc.) → canonical funnel directory
+  "/standard": "/funnel/standard/",
+  "/express": "/funnel/express/",
+  "/trial": "/funnel/trial/",
+  "/deep": "/funnel/deep/",
+  "/value": "/funnel/value/",
+};
+// Standalone root-level pages — safe to serve in place (relative paths resolve to root).
+const PAGE_REWRITES = {
   "/start": "/start.html",
   "/help": "/help.html",
   "/privacy": "/privacy.html",
@@ -154,8 +158,13 @@ const REWRITES = {
 
 app.use((req, res, next) => {
   const clean = req.path.length > 1 ? req.path.replace(/\/+$/, "") : req.path;
-  const target = REWRITES[clean];
-  if (target) return res.sendFile(path.join(DIST, target));
+  const dir = DIR_REDIRECTS[clean];
+  if (dir) {
+    if (req.path === dir) return next();            // already at canonical dir URL → let static serve it
+    return res.redirect(302, dir);                  // 302 during migration; can become 301 once stable
+  }
+  const page = PAGE_REWRITES[clean];
+  if (page) return res.sendFile(path.join(DIST, page));
   next();
 });
 
