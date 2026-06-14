@@ -1,0 +1,9 @@
+# Keep the Railway upload to just what the site needs.
+research/
+node_modules/
+dist/
+.git/
+.claude/
+.agents/
+.planning/
+.lovable/

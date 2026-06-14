@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 8080",
-    "build": "rm -rf dist && mkdir -p dist && cp index.html terms.html privacy.html help.html pitch.html start.html colors_and_type.css dist/ && cp -R assets dist/assets && cp -R public/. dist/"
+    "build": "rm -rf dist && mkdir -p dist && cp index.html terms.html privacy.html help.html pitch.html start.html colors_and_type.css dist/ && cp -R assets dist/assets && cp -R public/. dist/",
+    "start": "node server.js"
   },
   "devDependencies": {
     "vite": "^8.0.14"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.108.0"
+    "@supabase/supabase-js": "^2.108.0",
+    "express": "^4.21.2"
   }
 }
