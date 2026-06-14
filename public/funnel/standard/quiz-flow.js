@@ -113,8 +113,17 @@ const I_GOOGLE='<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M21.6 12.2c0-.6
 const flowEl = document.getElementById('flow');
 const heroEl = document.getElementById('scr-hero');
 let pos = 0;
+let maxPos = 0;                       // furthest step reached — gates deep-links / forward nav (no-skip)
 const state = { answers:{}, plan:0, name:'', email:'' };
 function lab(k,f){ const a=state.answers[k]; return (a&&a.label)?a.label:f; }
+
+/* ---------- routing + persistence (refresh-safe, back/forward, no-skip) ---------- */
+const FLOW_KEY = 'kokoro_flow_standard';
+function stepHash(i){ return STEPS[i] ? '#'+STEPS[i].id : ''; }
+function hashToPos(){ const id=(location.hash||'').replace(/^#/,''); return id ? STEPS.findIndex(s=>s.id===id) : -1; }
+function saveFlow(){ try{ sessionStorage.setItem(FLOW_KEY, JSON.stringify({ pos, maxPos, answers:state.answers, plan:state.plan, name:state.name, email:state.email })); }catch(_){} }
+function loadFlow(){ try{ const d=JSON.parse(sessionStorage.getItem(FLOW_KEY)||'null'); return (d && typeof d.pos==='number') ? d : null; }catch(_){ return null; } }
+function clearFlow(){ try{ sessionStorage.removeItem(FLOW_KEY); }catch(_){} }
 
 /* ---------- chrome ---------- */
 function panel(inner){ return '<div class="panel anim">'+inner+'</div>'; }
@@ -460,29 +469,66 @@ R.wire_reveal = (s, root) => {
   root.querySelectorAll('.rv-facet').forEach((f,i)=> f.style.animationDelay=(0.12+i*0.1)+'s');
 };
 
-/* ---------- navigation ---------- */
+/* ---------- navigation (history-driven: refresh-safe, back/forward, no-skip) ---------- */
 function renderStep(){
   const s = STEPS[pos];
   flowEl.innerHTML = R[s.type](s);
   flowEl.classList.add('show');
   heroEl.classList.remove('is-active');
   const root = flowEl.querySelector('.panel');
-  root.querySelectorAll('[data-act="back"]').forEach(b=> b.onclick = back);
+  root.querySelectorAll('[data-act="back"]').forEach(b=> b.onclick = goBack);
   root.querySelectorAll('[data-act="next"]').forEach(b=> b.addEventListener('click', ()=>{ if(b.disabled) return; next(); }));
   root.querySelectorAll('[data-act="restart"]').forEach(b=> b.onclick = restart);
   if (R['wire_'+s.type]) R['wire_'+s.type](s, root);
   root.querySelectorAll('.ava-vid').forEach(mountAvaVideo);
   const sc = root.querySelector('.qbody'); if(sc) sc.scrollTop = 0;
+  saveFlow();
 }
-function next(){ if(pos < STEPS.length-1){ pos++; renderStep(); } }
-function back(){
-  if(pos === 0){ flowEl.classList.remove('show'); flowEl.innerHTML=''; heroEl.classList.add('is-active'); return; }
-  pos--; renderStep();
+function showHero(){ flowEl.classList.remove('show'); flowEl.innerHTML=''; heroEl.classList.add('is-active'); }
+/* move to a step; push a history entry on forward navigation */
+function goStep(i, push){
+  pos = Math.max(0, Math.min(STEPS.length-1, i));
+  if(pos > maxPos) maxPos = pos;
+  if(push) history.pushState({pos}, '', stepHash(pos));
+  renderStep();
 }
-function startFlow(){ pos = 0; renderStep(); }
-function restart(){ pos = 0; state.answers={}; state.plan=0; state.name=''; flowEl.classList.remove('show'); flowEl.innerHTML=''; heroEl.classList.add('is-active'); }
+function next(){ if(pos < STEPS.length-1) goStep(pos+1, true); }
+function goBack(){ history.back(); }   /* unify in-app back + browser back through popstate */
+function startFlow(){ goStep(0, true); }   /* hero stays as the base history entry below step 0 */
+function restart(){
+  pos = 0; maxPos = 0; state.answers={}; state.plan=0; state.name=''; state.email='';
+  clearFlow();
+  history.replaceState({hero:true}, '', location.pathname + location.search);
+  showHero();
+}
 window.startFlow = startFlow; window.restart = restart;
-window.goTo = n => { pos = Math.max(0, Math.min(STEPS.length-1, n)); renderStep(); };
+window.goTo = n => goStep(n, true);
+
+/* browser (and in-app) back/forward */
+window.addEventListener('popstate', ()=>{
+  const i = hashToPos();
+  if(i < 0){ pos = 0; showHero(); return; }          // returned to base → hero
+  goStep(Math.min(i, maxPos), false);                // render a visited step; never push, never skip ahead
+});
+
+/* boot: restore from hash + sessionStorage (refresh-safe); cold deep-link → start (no-skip) */
+function bootFlow(){
+  const i = hashToPos();
+  if(i < 0){ showHero(); return; }                   // no hash → hero (normal landing)
+  const saved = loadFlow();
+  if(!saved){                                        // deep-link with no saved progress → start over
+    history.replaceState({hero:true}, '', location.pathname + location.search);
+    showHero(); return;
+  }
+  state.answers = saved.answers||{}; state.plan = saved.plan||0;
+  state.name = saved.name||''; state.email = saved.email||'';
+  if(state.email) window.__capiEmail = state.email;
+  maxPos = Math.max(saved.maxPos||0, saved.pos||0);
+  const target = Math.min(i, maxPos);                // can't jump past furthest reached
+  history.replaceState({pos:target}, '', stepHash(target));
+  goStep(target, false);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bootFlow); else bootFlow();
 
 /* ---------- per-type wiring ---------- */
 R.wire_single = (s, root) => {
