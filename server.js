@@ -46,6 +46,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Lightweight health check (Railway can ping it; also proves deploys land).
+app.get("/healthz", (req, res) => res.type("text").send("ok"));
+
 // Everything else: real static files (css, mp4, images, .html).
 // `extensions: ['html']` lets /foo resolve to /foo.html automatically.
 app.use(express.static(DIST, { extensions: ["html"], index: "index.html" }));
