@@ -141,6 +141,43 @@ app.post("/api/stripe-webhook", collectRawBody, async (req, res) => {
   return res.status(200).json({ received: true });
 });
 
+// Embedded Stripe Checkout — create a Session and return its client_secret so the
+// funnel can mount checkout ON-PAGE (no redirect). Falls back to hosted Payment Links
+// client-side if this is unavailable, so checkout never breaks.
+const CO_PRICES = { yearly: "price_1TgcDpCk0y2TzYnT1fLLwLwo", monthly: "price_1TgcDrCk0y2TzYnTu7DoGcqw", weekly: "price_1TgcDsCk0y2TzYnT1lBqIhrT" };
+const CO_VALUES = { yearly: "39.99", monthly: "14.99", weekly: "6.99" };
+app.post("/api/create-checkout-session", express.json({ limit: "16kb" }), async (req, res) => {
+  setCors(req, res);
+  const key = (process.env.STRIPE_SECRET_KEY || "").trim();
+  if (!key) return res.status(500).json({ error: "stripe key not configured" });
+  const b = req.body || {};
+  const plan = CO_PRICES[b.plan] ? b.plan : "yearly";
+  const value = CO_VALUES[plan];
+  const form = {
+    "mode": "subscription",
+    "ui_mode": "embedded",
+    "line_items[0][price]": CO_PRICES[plan],
+    "line_items[0][quantity]": "1",
+    "return_url": `https://kokoromind.com/funnel/standard/thanks.html?plan=${plan}&value=${value}&cur=USD&session_id={CHECKOUT_SESSION_ID}`,
+    "metadata[plan]": plan,
+    "metadata[value]": value,
+    "metadata[source_url]": typeof b.source_url === "string" ? b.source_url.slice(0, 300) : "",
+  };
+  if (b.email && /.+@.+\..+/.test(b.email)) { form["customer_email"] = b.email; form["metadata[email]"] = b.email; }
+  if (b.fbp) form["metadata[fbp]"] = String(b.fbp).slice(0, 200);
+  if (b.fbc) form["metadata[fbc]"] = String(b.fbc).slice(0, 200);
+  try {
+    const r = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+      method: "POST",
+      headers: { "Authorization": "Basic " + Buffer.from(key + ":").toString("base64"), "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(form).toString(),
+    });
+    const j = await r.json();
+    if (!r.ok) { console.error("create-checkout-session:", j.error); return res.status(502).json({ error: (j.error && j.error.message) || "stripe error" }); }
+    return res.json({ client_secret: j.client_secret });
+  } catch (e) { return res.status(502).json({ error: "stripe fetch failed" }); }
+});
+
 // Funnel clean URLs → redirect to the real trailing-slash DIRECTORY.
 // A 200 rewrite-in-place keeps the slash-less URL, so the page's RELATIVE asset
 // paths (quiz-flow.js, etc.) resolve against the wrong folder (e.g. /funnel/standard

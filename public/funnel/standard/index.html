@@ -960,6 +960,18 @@ src="https://www.facebook.com/tr?id=1318180623856061&ev=PageView&noscript=1"
   .pw-cta2{ margin-top:18px; }
 
   @media (prefers-reduced-motion:reduce){ *{ animation:none !important; } }
+
+  /* embedded checkout overlay */
+  .co-overlay{ position:fixed; inset:0; z-index:9999; background:rgba(27,27,27,.55); display:none;
+    align-items:flex-end; justify-content:center; backdrop-filter:blur(2px); }
+  .co-overlay.show{ display:flex; }
+  .co-sheet{ position:relative; width:100%; max-width:480px; max-height:94vh; overflow:auto;
+    background:#fff; border-radius:20px 20px 0 0; padding:44px 14px 18px; box-shadow:0 -12px 40px -10px rgba(0,0,0,.4);
+    animation:coUp .28s cubic-bezier(.22,1,.36,1); }
+  @media (min-width:520px){ .co-overlay{ align-items:center; } .co-sheet{ border-radius:20px; } }
+  @keyframes coUp{ from{ transform:translateY(28px); opacity:.6; } to{ transform:none; opacity:1; } }
+  .co-close{ position:absolute; top:8px; right:12px; width:34px; height:34px; border:none; background:transparent;
+    font-size:28px; line-height:1; color:var(--ink-soft,#5b5647); cursor:pointer; }
 </style>
 </head>
 <body>
@@ -1013,7 +1025,15 @@ src="https://www.facebook.com/tr?id=1318180623856061&ev=PageView&noscript=1"
   </svg>
 </template>
 
-<script src="quiz-data.js?v=std8"></script>
-<script src="quiz-flow.js?v=std8"></script>
+<!-- Embedded Stripe Checkout overlay (mounts on-page; hidden until the pay CTA) -->
+<div id="co-overlay" class="co-overlay" aria-hidden="true">
+  <div class="co-sheet">
+    <button class="co-close" type="button" onclick="closeCheckout()" aria-label="Close">&times;</button>
+    <div id="co-mount"></div>
+  </div>
+</div>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="quiz-data.js?v=std9"></script>
+<script src="quiz-flow.js?v=std9"></script>
 </body>
 </html>

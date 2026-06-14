@@ -728,17 +728,48 @@ const PLAN_NAME  = ['yearly','monthly','weekly'];
    Empty = no-op (the Lead pixel still fires). */
 const EMAIL_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwRuFGWNtzxvXXc4dDYdjOf2gV5Yl8pKzJr03zr1Egueq3bPhN3pm47-y8RD__9R0Ux/exec';
 
-function goToCheckout(){
+/* Embedded Stripe Checkout — pays ON-PAGE (no redirect). Falls back to the hosted
+   Payment Link if Stripe.js or the session endpoint is unavailable, so checkout
+   never breaks. The Stripe session id flows to thanks.html via return_url for dedup. */
+const STRIPE_PK = 'pk_live_51TetD0Ck0y2TzYnTVpH0CsF1xlob1dT0KSB2oHcM7l4mivPgOMlhW2BkwCpjNJZEvxtcYhfBxybgMaUwZRFxbFpR00aHIMtDQC';
+let _stripe = null, _embedded = null;
+function ckc(n){ const m=document.cookie.match('(?:^|; )'+n+'=([^;]*)'); return m?decodeURIComponent(m[1]):''; }
+function hostedFallback(){
   const link = STRIPE_LINKS[state.plan] || STRIPE_LINKS[0];
   const email = (state.email || '').trim();
-  const url = email && /.+@.+\..+/.test(email)
-    ? link + '?prefilled_email=' + encodeURIComponent(email)
-    : link;
+  const url = email && /.+@.+\..+/.test(email) ? link + '?prefilled_email=' + encodeURIComponent(email) : link;
+  window.location.href = url;
+}
+function closeCheckout(){
+  const ov = document.getElementById('co-overlay');
+  if (ov) ov.classList.remove('show');
+  if (_embedded){ try{ _embedded.destroy(); }catch(e){} _embedded=null; }
+}
+window.closeCheckout = closeCheckout;
+async function goToCheckout(){
+  const plan = PLAN_NAME[state.plan] || 'yearly';
+  const email = (state.email || '').trim();
   // strong mid-funnel signal Meta can optimize toward
-  fbtrack('InitiateCheckout', { value: PLAN_VALUE[state.plan] || 39.99, currency: 'USD',
-                                content_name: PLAN_NAME[state.plan] || 'yearly' });
-  // small delay so the event flushes before we leave the page
-  setTimeout(()=>{ window.location.href = url; }, 200);
+  fbtrack('InitiateCheckout', { value: PLAN_VALUE[state.plan] || 39.99, currency: 'USD', content_name: plan });
+  const ov = document.getElementById('co-overlay');
+  const mount = document.getElementById('co-mount');
+  if (!window.Stripe || !ov || !mount){ return hostedFallback(); }  // graceful fallback
+  try {
+    const resp = await fetch('/api/create-checkout-session', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ plan, email, fbp: ckc('_fbp'), fbc: ckc('_fbc'), source_url: location.href })
+    });
+    const data = await resp.json();
+    if (!data || !data.client_secret) throw new Error('no client_secret');
+    mount.innerHTML = '';
+    _stripe = _stripe || Stripe(STRIPE_PK);
+    if (_embedded){ try{ _embedded.destroy(); }catch(e){} }
+    _embedded = await _stripe.initEmbeddedCheckout({ clientSecret: data.client_secret });
+    _embedded.mount('#co-mount');
+    ov.classList.add('show');
+  } catch(e){
+    hostedFallback();
+  }
 }
 
 R.wire_paywall = (s, root) => {
