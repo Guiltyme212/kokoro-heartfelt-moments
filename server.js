@@ -169,7 +169,11 @@ app.post("/api/create-checkout-session", express.json({ limit: "16kb" }), async 
   try {
     const r = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
-      headers: { "Authorization": "Basic " + Buffer.from(key + ":").toString("base64"), "Content-Type": "application/x-www-form-urlencoded" },
+      headers: {
+        "Authorization": "Basic " + Buffer.from(key + ":").toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Stripe-Version": "2024-06-20", // pin: stable embedded-checkout (ui_mode 'embedded' + initEmbeddedCheckout)
+      },
       body: new URLSearchParams(form).toString(),
     });
     const j = await r.json();
